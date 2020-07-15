@@ -189,6 +189,8 @@ desired effect
 </div>
 <!-- ./wrapper -->
 
+<!-- Main Footer -->
+{{--  @include('admin.layouts.mainFooter') --}}
 
 <!-- REQUIRED JS SCRIPTS -->
 
@@ -211,7 +213,5 @@ desired effect
      user experience. Slimscroll is required when using the
      fixed layout. -->
 @yield('js')
-        <!-- Main Footer -->
-<!--@include('admin.layouts.mainFooter')-->
 </body>
 </html>

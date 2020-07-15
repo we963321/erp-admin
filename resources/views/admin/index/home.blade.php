@@ -35,7 +35,7 @@
         }
 
         .title {
-            font-size: 120px;
+            font-size: 24px;
         }
     </style>
 
@@ -46,7 +46,7 @@
 
     <div class="container">
         <div class="content">
-            <div class="title">HOME</div>
+            <div class="title">歡迎使用</div>
         </div>
     </div>
 

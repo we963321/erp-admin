@@ -16,12 +16,8 @@ Route::post('login', 'LoginController@login');
 Route::get('logout', 'LoginController@logout');
 Route::post('logout', 'LoginController@logout');
 
-Route::get('/', 'IndexController@index');
+//Route::get('/', 'IndexController@index');
 
-
-Route::get('index', ['as' => 'admin.index', 'uses' => function () {
-    return redirect('/admin/log-viewer');
-}]);
 
 Route::group(['prefix' => 'errors'], function () {
     Route::get('403', function () {
@@ -38,6 +34,11 @@ Route::group(['prefix' => 'errors'], function () {
 });
 
 Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () {
+
+    //儀表版
+    Route::get('/', ['as' => 'admin.index', 'uses' => function () {
+        return redirect('/admin/log-viewer');
+    }]);
 
     //權限管理路由
     Route::get('permission/{cid}/create', ['as' => 'admin.permission.create', 'uses' => 'PermissionController@create']);
@@ -64,9 +65,5 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::post('human/index', ['as' => 'admin.human.index', 'uses' => 'HumanController@index']); 
     Route::resource('human', 'HumanController', ['names' => ['update' => 'admin.human.edit', 'store' => 'admin.human.create']]);*/
 
-});
-
-Route::get('/', function () {
-    return redirect('/admin/index');
 });
 

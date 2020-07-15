@@ -34,6 +34,9 @@ class AuthenticateAdmin
                     'msg'    => '您沒有權限執行此操作',
                 ]);
             } else {
+                if($routeName == 'admin.index'){
+                    return response()->view('admin.index.home');
+                }
                 return response()->view('admin.errors.403', compact('previousUrl'));
             }
         }
