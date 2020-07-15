@@ -1,0 +1,45 @@
+<?php
+
+use Illuminate\Database\Seeder;
+
+class AdminInitSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $date_created = date('Y-m-d H:i:s');
+        $date_updated = date('Y-m-d H:i:s');
+
+        \App\Models\Admin\AdminUser::truncate();
+        \App\Models\Admin\Permission::truncate();
+        \DB::select(
+            <<<SQL
+                INSERT INTO `admin_permissions` (`id`, `name`, `label`, `description`, `cid`, `icon`, `created_at`, `updated_at`)
+VALUES
+    (1, 'admin.permission', '權限管理', '', 0, 'fa-users', "$date_created", "$date_updated"),
+    (2, 'admin.permission.index', '權限列表', '', 1, '', "$date_created", "$date_updated"),
+    (3, 'admin.permission.create', '權限新增', '', 1, '', "$date_created", "$date_updated"),
+    (4, 'admin.permission.edit', '權限修改', '', 1, '', "$date_created", "$date_updated"),
+    (5, 'admin.permission.destroy', '權限刪除', '', 1, '', "$date_created", "$date_updated"),
+    (6, 'admin.role.index', '角色列表', '', 1, '', "$date_created", "$date_updated"),
+    (7, 'admin.role.create', '角色新增', '', 1, '', "$date_created", "$date_updated"),
+    (8, 'admin.role.edit', '角色修改', '', 1, '', "$date_created", "$date_updated"),
+    (9, 'admin.role.destroy', '角色刪除', '', 1, '', "$date_created", "$date_updated"),
+    (10, 'admin.user.index', '用戶管理', '', 1, '', "$date_created", "$date_updated"),
+    (11, 'admin.user.create', '用戶新增', '', 1, '', "$date_created", "$date_updated"),
+    (12, 'admin.user.edit', '用戶編輯', '', 1, '', "$date_created", "$date_updated"),
+    (13, 'admin.user.destroy', '用戶刪除', '', 1, '', "$date_created", "$date_updated");
+SQL
+        );
+        $admin = new \App\Models\Admin\AdminUser();
+        $admin->id = 1;
+        $admin->name = 'admin';
+        $admin->email = 'admin@gmail.com';
+        $admin->password = bcrypt('123456');
+        $admin->save();
+    }
+}
