@@ -31,7 +31,7 @@ class AdminUserUpdateRequest extends Request
             'id_number' => 'required|unique:admin_users,id_number,' . $this->get('id') . '|min:10|max:10',
             'birthday'  => 'required|min:10|max:10',
             'status'    => 'required|in:0,1',
-            'roles'     => 'required',
+            //'roles'     => 'required',
         ];
     }
 }

@@ -121,12 +121,14 @@ class UserController extends Controller
             $user->emp_id = 'z'.date('Ym').$prefix.$user->id;
             $user->save();
 
-            if(empty($request->get('roles'))){
-                return redirect('/admin/user')->withErrors("請先新增角色!");
-            }
+            if(Gate::forUser(auth('admin')->user())->check('admin.role.edit')){
+                if(empty($request->get('roles'))){
+                    return redirect('/admin/user')->withErrors("請先新增角色!");
+                }
 
-            if (is_array($request->get('roles'))) {
-                $user->giveRoleTo($request->get('roles'));
+                if (is_array($request->get('roles'))) {
+                    $user->giveRoleTo($request->get('roles'));
+                }
             }
 
             if (is_array($request->get('stores'))) {
@@ -223,7 +225,7 @@ class UserController extends Controller
             DB::beginTransaction();
 
             $user->save();
-
+            
             if(\Gate::forUser(auth('admin')->user())->check('admin.role.edit')){
                 $user->giveRoleTo($request->get('roles', []));
             }
