@@ -12,9 +12,9 @@
         <div class="col-md-6">
         </div>
         <div class="col-md-6 text-right">
-            @if(Gate::forUser(auth('admin')->user())->check('admin.user.create'))
-                <a href="/admin/user/create" class="btn btn-success btn-md">
-                    <i class="fa fa-plus-circle"></i> 新增用戶
+            @if(Gate::forUser(auth('admin')->user())->check('admin.store.create'))
+                <a href="/admin/store/create" class="btn btn-success btn-md">
+                    <i class="fa fa-plus-circle"></i> 新增店別
                 </a>
             @endif
         </div>
@@ -37,14 +37,10 @@
                         <thead>
                         <tr>
                             <th data-sortable="false" class="hidden-sm">編號</th>
-                            <th data-sortable="false">角色</th>
-                            <th data-sortable="false">所屬分店</th>
-                            <th class="hidden-sm">員工編號</th>
-                            <th class="hidden-sm">姓名</th>
-                            <th class="hidden-sm">信箱</th>
-                            <th class="hidden-sm">電話</th>
-                            <th class="hidden-md">創建日期</th>
-                            <th class="hidden-md">修改日期</th>
+                            <th data-sortable="false">管理員 / 員工編號 / 電話</th>
+                            <th class="hidden-sm">分店簡稱</th>
+                            <th class="hidden-md">分店名稱</th>
+                            <th class="hidden-md">分店電話</th>
                             <th data-sortable="false">操作</th>
                         </tr>
                         </thead>
@@ -69,11 +65,11 @@
                 <div class="modal-body">
                     <p class="lead">
                         <i class="fa fa-question-circle fa-lg"></i>
-                        確認要刪除這個用戶嗎?
+                        確認要刪除這個店別嗎?
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <form class="deleteForm" method="POST" action="/admin/user">
+                    <form class="deleteForm" method="POST" action="/admin/store">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -117,7 +113,7 @@
                             order: [[0, "asc"]],
                             serverSide: true,
                             ajax: {
-                                url: '/admin/user/index',
+                                url: '/admin/store/index',
                                 type: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -125,27 +121,23 @@
                             },
                             "columns": [
                                 {"data": "id"},
-                                {"data": "role"},
-                                {"data": "store"},
-                                {"data": "emp_id"},
+                                {"data": "admin_user_id"},
+                                {"data": "short_name"},
                                 {"data": "name"},
-                                {"data": "email"},
                                 {"data": "mobile"},
-                                {"data": "created_at"},
-                                {"data": "updated_at"},
                                 {"data": "action"},
                             ],
                             columnDefs: [
                                 {
                                     'targets': -1, 
                                     "render": function (data, type, row) {
-                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check('admin.user.edit') ? 1 : 0}};
-                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check('admin.user.destroy') ? 1 :0}};
+                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check('admin.store.edit') ? 1 : 0}};
+                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check('admin.store.destroy') ? 1 :0}};
                                         var str = '';
 
                                         //編輯
                                         if (row_edit) {
-                                            str += '<a style="margin:3px;" href="/admin/user/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
+                                            str += '<a style="margin:3px;" href="/admin/store/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
                                         }
 
                                         //刪除
@@ -157,28 +149,11 @@
                                     }
                                 },
                                 {   
-                                    //角色
+                                    //管理員
                                     'targets': 1, 
                                     "render": function (data, type, row) {
-                                        let roles = row['roles'];
-                                        let str = '';
-                                        for(i in roles){
-                                            str += '<div>' + roles[i]['name'] + '</div>';
-                                        }
-
-                                        return str;
-                                    }
-                                },
-                                {   
-                                    //分店
-                                    'targets': 2, 
-                                    "render": function (data, type, row) {
-                                        let stores = row['stores'];
-                                        let str = '';
-                                        for(i in stores){
-                                            str += '<div>' + stores[i]['name'] + '</div>';
-                                        }
-
+                                        let admin_user = row['admin_user'];
+                                        let str = `<a href="/admin/user/${admin_user.id}/edit">` + admin_user.name + ' / ' + admin_user.emp_id + ' / ' + admin_user.mobile + '</a>';
                                         return str;
                                     }
                                 }
@@ -201,7 +176,7 @@
 
                         $("table").delegate('.delBtn', 'click', function () {
                             var id = $(this).attr('attr');
-                            $('.deleteForm').attr('action', '/admin/user/' + id);
+                            $('.deleteForm').attr('action', '/admin/store/' + id);
                             $("#modal-delete").modal();
                         });
 

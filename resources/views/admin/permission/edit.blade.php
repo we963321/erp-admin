@@ -32,6 +32,10 @@
                                             <i class="fa fa-plus-circle"></i>
                                             保存
                                         </button>
+                                        <button class="btn btn-primary btn-md" onclick="window.history.go(-1); return false;">
+                                            <i class="fa fa-sign-in"></i>
+                                            返回
+                                        </button>
                                     </div>
                                 </div>
 

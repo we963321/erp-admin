@@ -11,10 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return redirect('/admin');
-});
-
 Auth::routes();
 
-//Route::get('/home', 'HomeController@index');
+Route::get('/', function () {
+    return redirect('login');
+});
+
+Route::group(['middleware' => ['auth:web']], function () {
+
+	Route::get('home', 'IndexController@index');
+});
+
+

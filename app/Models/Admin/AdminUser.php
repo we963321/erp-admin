@@ -16,7 +16,7 @@ class AdminUser extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['name', 'email'];
+    protected $fillable = [];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -29,6 +29,12 @@ class AdminUser extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'admin_role_user', 'user_id', 'role_id');
+    }
+
+    //用戶店別
+    public function stores()
+    {
+        return $this->belongsToMany(Store::class, 'store_admin_user', 'user_id', 'store_id');
     }
 
     // 判斷用戶是否具有某個角色
@@ -58,7 +64,6 @@ class AdminUser extends Authenticatable
         return $this->roles()->save($role);
     }
 
-
     //角色整體新增與修改
     public function giveRoleTo(array $RoleId)
     {
@@ -66,6 +71,25 @@ class AdminUser extends Authenticatable
         $roles = Role::whereIn('id', $RoleId)->get();
         foreach ($roles as $v) {
             $this->assignRole($v);
+        }
+
+        return true;
+    }
+
+
+    // 給用戶分配店別
+    public function assignStore($store)
+    {
+        return $this->stores()->save($store);
+    }
+
+    //店別整體新增與修改
+    public function giveStoreTo(array $StoreId)
+    {
+        $this->stores()->detach();
+        $stores = Store::whereIn('id', $StoreId)->get();
+        foreach ($stores as $v) {
+            $this->assignStore($v);
         }
 
         return true;

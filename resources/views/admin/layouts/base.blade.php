@@ -32,6 +32,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    {{--datepicker--}}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     {{--dataTabels--}}
     {{--<link href="/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet">--}}
     <link href="/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
@@ -39,6 +42,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
     {{--loding--}}
     <link href="/dist/css/load/load.css" rel="stylesheet">
     @yield('css')
+
+
+    <!-- datepicker -->
+    <script src="/dist/js/1.12.4.jquery.js"></script>
+    <script src="/dist/js/1.12.1.jquery-ui.js"></script>
+
+    <!-- Bootstrap 3.3.6 -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/dist/js/app.min.js"></script>
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -194,13 +207,6 @@ desired effect
 
 <!-- REQUIRED JS SCRIPTS -->
 
-<!-- jQuery 2.2.0 -->
-<script src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-
-<!-- Bootstrap 3.3.6 -->
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-<!-- AdminLTE App -->
-<script src="/dist/js/app.min.js"></script>
 
 <!-- dataTables -->
 <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
@@ -212,6 +218,20 @@ desired effect
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
+
+<script>
+    $(function() {
+        $( "#datepicker" ).datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            yearRange: "c-100:c+0",
+        });
+    });
+</script>
+
+
 @yield('js')
 </body>
 </html>

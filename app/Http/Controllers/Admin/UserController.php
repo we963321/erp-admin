@@ -3,18 +3,28 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Admin\Role;
+use App\Models\Admin\Store;
 use App\Models\Admin\AdminUser as User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use DB;
 
 class UserController extends Controller
 {
     protected $fields = [
-        'name'  => '',
-        'email' => '',
-        'roles' => [],
+        'emp_id'    => '',
+        'name'      => '',
+        'email'     => '',
+        'sex'       => 1,
+        'mobile'    => '',
+        'id_number' => '',
+        'address'   => '',
+        'birthday'  => '',
+        'status'    => 1,
+        'roles'     => [],
+        'stores'    => [],
     ];
 
     /**
@@ -40,7 +50,7 @@ class UserController extends Controller
                         ->orWhere('email', 'like', '%' . $search['value'] . '%');
                 })->where('id', '!=', 1)->count();
 
-                $data['data'] = User::with(['roles'])->where(function ($query) use ($search) {
+                $data['data'] = User::with(['roles'])->with(['stores'])->where(function ($query) use ($search) {
                     $query->where('name', 'LIKE', '%' . $search['value'] . '%')
                         ->orWhere('email', 'like', '%' . $search['value'] . '%');
                 })->where('id', '!=', 1)->skip($start)->take($length)
@@ -49,7 +59,7 @@ class UserController extends Controller
 
             } else {
                 $data['recordsFiltered'] = User::count();
-                $data['data'] = User::with(['roles'])->
+                $data['data'] = User::with(['roles'])->with(['stores'])->
                 where('id', '!=', 1)->skip($start)->take($length)
                     ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                     ->get()->toArray();
@@ -74,6 +84,8 @@ class UserController extends Controller
         }
         $data['rolesAll'] = Role::all()->toArray();
 
+        $data['storesAll'] = Store::all()->toArray();
+
         return view('admin.user.create', $data);
     }
 
@@ -86,16 +98,48 @@ class UserController extends Controller
     public function store(Requests\AdminUserCreateRequest $request)
     {
         $user = new User();
-        foreach (array_keys($this->fields) as $field) {
-            $user->$field = $request->get($field);
+
+        try{
+            DB::beginTransaction();
+
+            foreach (array_keys($this->fields) as $field) {
+                $user->$field = $request->get($field);
+            }
+
+            $user->password = bcrypt($request->get('password'));
+            $user->emp_id = 0;
+            unset($user->roles);
+            unset($user->stores);
+            $user->save();
+
+            //自產員工編號
+            $zero_num = 7 - strlen($user->id);
+            $prefix = '';
+            for($i = 0; $i <= $zero_num; $i++){
+                $prefix .= '0';
+            }
+            $user->emp_id = 'z'.date('Ym').$prefix.$user->id;
+            $user->save();
+
+            if(empty($request->get('roles'))){
+                return redirect('/admin/user')->withErrors("請先新增角色!");
+            }
+
+            if (is_array($request->get('roles'))) {
+                $user->giveRoleTo($request->get('roles'));
+            }
+
+            if (is_array($request->get('stores'))) {
+                $user->giveStoreTo($request->get('stores'));
+            }
+
+            event(new \App\Events\userActionEvent('\App\Models\Admin\AdminUser', $user->id, 1, '新增了用戶' . $user->name));
+
+            DB::commit();
+        }catch(\PDOException $e){
+            DB::rollBack();
+            return redirect('/admin/user')->withErrors($e->getMessage());
         }
-        $user->password = bcrypt($request->get('password'));
-        unset($user->roles);
-        $user->save();
-        if (is_array($request->get('roles'))) {
-            $user->giveRoleTo($request->get('roles'));
-        }
-        event(new \App\Events\userActionEvent('\App\Models\Admin\AdminUser', $user->id, 1, '新增了用戶' . $user->name));
 
         return redirect('/admin/user')->withSuccess('新增成功！');
     }
@@ -128,12 +172,23 @@ class UserController extends Controller
             }
         }
         $user->roles = $roles;
+
+        $stores = [];
+        if ($user->stores) {
+            foreach ($user->stores as $v) {
+                $stores[] = $v->id;
+            }
+        }
+        $user->stores = $stores;
+
         foreach (array_keys($this->fields) as $field) {
             $data[$field] = old($field, $user->$field);
         }
         $data['rolesAll'] = Role::all()->toArray();
+        $data['storesAll'] = Store::all()->toArray();
         $data['id'] = (int)$id;
-
+        $data['store_manager'] = Store::where('admin_user_id', $id)->get()->toArray();
+        
         return view('admin.user.edit', $data);
     }
 
@@ -156,19 +211,35 @@ class UserController extends Controller
         foreach (array_keys($this->fields) as $field) {
             $user->$field = $request->get($field);
         }
+        unset($user->emp_id);
         unset($user->roles);
+        unset($user->stores);
+
         if ($request->get('password') != '') {
             $user->password = bcrypt($request->get('password'));
-
         }
 
-        $user->save();
+         try{
+            DB::beginTransaction();
 
-        if(\Gate::forUser(auth('admin')->user())->check('admin.role.edit')){
-            $user->giveRoleTo($request->get('roles', []));
+            $user->save();
+
+            if(\Gate::forUser(auth('admin')->user())->check('admin.role.edit')){
+                $user->giveRoleTo($request->get('roles', []));
+            }
+
+            if(\Gate::forUser(auth('admin')->user())->check('admin.store.edit')){
+                $user->giveStoreTo($request->get('stores', []));
+            }
+
+            event(new \App\Events\userActionEvent('\App\Models\Admin\AdminUser', $user->id, 3, '編輯了用戶' . $user->name));
+
+            DB::commit();
+        }catch(\PDOException $e){
+            DB::rollBack();
+            return redirect('/admin/user')->withErrors($e->getMessage());
         }
 
-        event(new \App\Events\userActionEvent('\App\Models\Admin\AdminUser', $user->id, 3, '編輯了用戶' . $user->name));
 
         return redirect('/admin/user')->withSuccess('修改成功！');
     }
@@ -185,6 +256,11 @@ class UserController extends Controller
         foreach ($tag->roles as $v) {
             $tag->roles()->detach($v);
         }
+
+        foreach ($tag->stores as $v) {
+            $tag->stores()->detach($v);
+        }
+
         if ($tag && $tag->id != 1) {
             $tag->delete();
         } else {
