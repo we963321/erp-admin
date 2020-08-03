@@ -89,7 +89,7 @@ class StoreController extends Controller
 
         $data['admin_user'] = $admin_user;
 
-        return view('admin.Store.create', $data);
+        return view('admin.store.create', $data);
     }
 
     /**
