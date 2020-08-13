@@ -89,8 +89,15 @@
         let towns = {!! json_encode(config('params_config')) !!}[this.value];
 
         let town = '';
+
+        let default_town = "{!! $town !!}";
+
         for(i in towns){
-            town += `<option value=${towns[i]}>${towns[i]}</option>`;
+            if(towns[i] == default_town){
+                town += `<option value=${towns[i]} selected>${towns[i]}</option>`;
+            }else{
+                town += `<option value=${towns[i]}>${towns[i]}</option>`;
+            }
         }
         
         $('select[name=town] option').remove();

@@ -63,5 +63,6 @@ class Kernel extends HttpKernel
 
         'authAdmin' => \App\Http\Middleware\AuthenticateAdmin::class,
         'menu'      => \App\Http\Middleware\GetMenu::class,
+        'menu_web'  => \App\Http\Middleware\GetMenuWeb::class,
     ];
 }

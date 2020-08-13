@@ -63,7 +63,7 @@
         <!-- /.social-auth-links -->
 
         {{--<a href="#">我忘了密碼</a><br>--}}
-        {{--<a href="#" class="text-center">新註冊用戶</a>--}}
+        {{--<a href="/admin/customer/register" class="text-center">註冊</a>--}}
 
     </div>
     <!-- /.login-box-body -->

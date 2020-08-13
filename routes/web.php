@@ -17,9 +17,20 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::group(['middleware' => ['auth:web']], function () {
+Route::get('customer/register', 'CustomerController@register'); 
+Route::post('customer/register', 'CustomerController@create'); 
+
+Route::group(['middleware' => ['auth:web', 'menu_web']], function () {
 
 	Route::get('home', 'IndexController@index');
+
+	Route::group(['prefix' => 'customer'], function () {
+		Route::get('mydata', 'CustomerController@mydata')->name('customer.mydata');
+		Route::put('saveMydata', 'CustomerController@saveMydata');
+		
+		Route::get('family', 'CustomerController@family')->name('customer.family');
+		Route::get('work', 'CustomerController@work')->name('customer.work');
+	});
 });
 
 

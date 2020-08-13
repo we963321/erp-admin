@@ -6,9 +6,9 @@
         <div class="col-md-6">
         </div>
         <div class="col-md-6 text-right">
-            @if(Gate::forUser(auth('admin')->user())->check('admin.store.create'))
-                <a href="/admin/store/create" class="btn btn-success btn-md">
-                    <i class="fa fa-plus-circle"></i> 新增店別
+            @if(Gate::forUser(auth('admin')->user())->check('admin.customer.create'))
+                <a href="/admin/customer/create" class="btn btn-success btn-md">
+                    <i class="fa fa-plus-circle"></i> 新增客戶
                 </a>
             @endif
         </div>
@@ -23,7 +23,6 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
-
                 @include('admin.partials.errors')
                 @include('admin.partials.success')
                 <div class="box-body">
@@ -31,10 +30,12 @@
                         <thead>
                         <tr>
                             <th data-sortable="false" class="hidden-sm">編號</th>
-                            <th data-sortable="false">管理員 / 員工編號 / 電話</th>
-                            <th class="hidden-sm">分店簡稱</th>
-                            <th class="hidden-md">分店名稱</th>
-                            <th class="hidden-md">分店電話</th>
+                            <th class="hidden-sm">客戶編號</th>
+                            <th class="hidden-sm">姓名</th>
+                            <th class="hidden-sm">信箱</th>
+                            <th class="hidden-sm">電話</th>
+                            <th class="hidden-md">創建日期</th>
+                            <th class="hidden-md">修改日期</th>
                             <th data-sortable="false">操作</th>
                         </tr>
                         </thead>
@@ -59,11 +60,11 @@
                 <div class="modal-body">
                     <p class="lead">
                         <i class="fa fa-question-circle fa-lg"></i>
-                        確認要刪除這個店別嗎?
+                        確認要刪除這個客戶嗎?
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <form class="deleteForm" method="POST" action="/admin/store">
+                    <form class="deleteForm" method="POST" action="/admin/customer">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -107,7 +108,7 @@
                             order: [[0, "asc"]],
                             serverSide: true,
                             ajax: {
-                                url: '/admin/store/index',
+                                url: '/admin/customer/index',
                                 type: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -115,23 +116,25 @@
                             },
                             "columns": [
                                 {"data": "id"},
-                                {"data": "admin_user_id"},
-                                {"data": "short_name"},
+                                {"data": "cust_id"},
                                 {"data": "name"},
+                                {"data": "email"},
                                 {"data": "mobile"},
+                                {"data": "created_at"},
+                                {"data": "updated_at"},
                                 {"data": "action"},
                             ],
                             columnDefs: [
                                 {
                                     'targets': -1, 
                                     "render": function (data, type, row) {
-                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check('admin.store.edit') ? 1 : 0}};
-                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check('admin.store.destroy') ? 1 :0}};
+                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check('admin.customer.edit') ? 1 : 0}};
+                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check('admin.customer.destroy') ? 1 :0}};
                                         var str = '';
 
                                         //編輯
                                         if (row_edit) {
-                                            str += '<a style="margin:3px;" href="/admin/store/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
+                                            str += '<a style="margin:3px;" href="/admin/customer/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
                                         }
 
                                         //刪除
@@ -139,15 +142,6 @@
                                             str += '<a style="margin:3px;" href="#" attr="' + row['id'] + '" class="delBtn X-Small btn-xs text-danger"><i class="fa fa-times-circle"></i> 刪除</a>';
                                         }
 
-                                        return str;
-                                    }
-                                },
-                                {   
-                                    //管理員
-                                    'targets': 1, 
-                                    "render": function (data, type, row) {
-                                        let admin_user = row['admin_user'];
-                                        let str = `<a href="/admin/user/${admin_user.id}/edit">` + admin_user.name + ' / ' + admin_user.emp_id + ' / ' + admin_user.mobile + '</a>';
                                         return str;
                                     }
                                 }
@@ -170,7 +164,7 @@
 
                         $("table").delegate('.delBtn', 'click', function () {
                             var id = $(this).attr('attr');
-                            $('.deleteForm').attr('action', '/admin/store/' + id);
+                            $('.deleteForm').attr('action', '/admin/customer/' + id);
                             $("#modal-delete").modal();
                         });
 

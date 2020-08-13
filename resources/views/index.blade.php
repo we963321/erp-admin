@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.base')
 
 @section('content')
-<div id="wrapper">
-   
-</div>
+
+<div>首頁</div>
+    
 @stop

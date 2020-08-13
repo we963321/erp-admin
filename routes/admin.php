@@ -33,6 +33,9 @@ Route::group(['prefix' => 'errors'], function () {
     });
 });
 
+//Route::get('customer/register', 'CustomerController@register'); 
+Route::post('customer/register', 'CustomerController@store');
+
 Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () {
 
     //儀表版
@@ -55,7 +58,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
 
 
     //用戶管理
-    Route::get('user/index', ['as' => 'admin.user.index', 'uses' => 'UserController@index']);  //用戶管理
+    Route::get('user/index', ['as' => 'admin.user.index', 'uses' => 'UserController@index']);
     Route::post('user/index', ['as' => 'admin.user.index', 'uses' => 'UserController@index']);
     Route::resource('user', 'UserController', ['names' => ['update' => 'admin.user.edit', 'store' => 'admin.user.create']]);
 

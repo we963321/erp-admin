@@ -64,6 +64,5 @@ class GetMenu
         $data['openarr'] = array_unique($openArr);
 
         return $data;
-
     }
 }

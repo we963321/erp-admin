@@ -1,11 +1,5 @@
 @extends('admin.layouts.base')
 
-@section('title','首頁')
-
-@section('pageHeader','首頁')
-
-@section('pageDesc','首頁')
-
 @section('content')
 
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">

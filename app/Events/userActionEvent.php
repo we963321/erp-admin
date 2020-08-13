@@ -21,8 +21,8 @@ class userActionEvent extends Event
      */
     public function __construct(string $model, int $aid, int $type, string $content)
     {
-        $this->uid = auth('admin')->user()->id;
-        $this->adminName = auth('admin')->user()->name;
+        $this->uid = auth('admin')->user()->id ?? 0;
+        $this->adminName = auth('admin')->user()->name ?? '';
         $this->model = $model;
         $this->aid = $aid;
         $this->type = $type;

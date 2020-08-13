@@ -37,7 +37,12 @@ VALUES
     (15, 'admin.store.index', '分店列表', '', 14, '', "$date_created", "$date_updated"),
     (16, 'admin.store.create', '分店新增', '', 14, '', "$date_created", "$date_updated"),
     (17, 'admin.store.edit', '分店修改', '', 14, '', "$date_created", "$date_updated"),
-    (18, 'admin.store.destroy', '分店刪除', '', 14, '', "$date_created", "$date_updated");
+    (18, 'admin.store.destroy', '分店刪除', '', 14, '', "$date_created", "$date_updated"),
+    (19, 'admin.customer', '客戶管理', '', 0, 'fa-th', "$date_created", "$date_updated"),
+    (20, 'admin.customer.index', '客戶列表', '', 19, '', "$date_created", "$date_updated"),
+    (21, 'admin.customer.create', '客戶新增', '', 19, '', "$date_created", "$date_updated"),
+    (22, 'admin.customer.edit', '客戶修改', '', 19, '', "$date_created", "$date_updated"),
+    (23, 'admin.customer.destroy', '客戶刪除', '', 19, '', "$date_created", "$date_updated");
 SQL
         );
         $admin = new \App\Models\Admin\AdminUser();
