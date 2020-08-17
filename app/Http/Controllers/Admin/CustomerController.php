@@ -54,19 +54,18 @@ class CustomerController extends Controller
                 $data['recordsFiltered'] = User::where(function ($query) use ($search) {
                     $query->where('name', 'LIKE', '%' . $search['value'] . '%')
                         ->orWhere('email', 'like', '%' . $search['value'] . '%');
-                })->where('id', '!=', 1)->count();
+                })->count();
 
                 $data['data'] = User::with(['stores'])->where(function ($query) use ($search) {
                     $query->where('name', 'LIKE', '%' . $search['value'] . '%')
                         ->orWhere('email', 'like', '%' . $search['value'] . '%');
-                })->where('id', '!=', 1)->skip($start)->take($length)
+                })->skip($start)->take($length)
                     ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                     ->get()->toArray();
 
             } else {
                 $data['recordsFiltered'] = User::count();
-                $data['data'] = User::with(['stores'])->
-                where('id', '!=', 1)->skip($start)->take($length)
+                $data['data'] = User::with(['stores'])->skip($start)->take($length)
                     ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                     ->get()->toArray();
             }
@@ -244,22 +243,5 @@ class CustomerController extends Controller
 
         return redirect()->back()
             ->withSuccess("刪除成功");
-    }
-
-
-    public function register(Request $request)
-    {
-        if(!$request->isMethod('post')){
-            $data = [];
-            foreach ($this->fields as $field => $default) {
-                $data[$field] = old($field, $default);
-            }
-
-            $data['storesAll'] = Store::all()->toArray();
-
-            return view('admin.customer.register', $data);
-        }else{
-
-        }
     }
 }

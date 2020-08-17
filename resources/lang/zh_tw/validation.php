@@ -111,6 +111,7 @@ return [
 
     'attributes'           => [
         'name'                  => '名稱',
+        'code'                  => '代碼',
         'short_name'            => '簡稱',
         'username'              => '用戶名',
         'email'                 => '信箱',
