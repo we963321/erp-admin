@@ -104,7 +104,7 @@ class PermissionController extends Controller
         }
         $permission->save();
         Event::fire(new permChangeEvent());
-        event(new \App\Events\userActionEvent('\App\Models\Admin\Permission', $permission->id, 1, '新增了權限:' . $permission->name . '(' . $permission->label . ')'));
+        event(new \App\Events\userActionEvent('\App\Models\Admin\Permission', $permission->id, 1, '新增了權限：' . $permission->name . '(' . $permission->label . ')'));
 
         return redirect('/admin/permission/' . $permission->cid)->withSuccess('新增成功！');
     }
@@ -154,7 +154,7 @@ class PermissionController extends Controller
         }
         $permission->save();
         Event::fire(new permChangeEvent());
-        event(new \App\Events\userActionEvent('\App\Models\Admin\Permission', $permission->id, 3, '修改了權限:' . $permission->name . '(' . $permission->label . ')'));
+        event(new \App\Events\userActionEvent('\App\Models\Admin\Permission', $permission->id, 3, '修改了權限：' . $permission->name . '(' . $permission->label . ')'));
 
         return redirect('admin/permission/' . $permission->cid)->withSuccess('修改成功！');
     }
@@ -184,7 +184,8 @@ class PermissionController extends Controller
                 ->withErrors("刪除失敗");
         }
         Event::fire(new permChangeEvent());
-        event(new \App\Events\userActionEvent('\App\Models\Admin\Permission', $tag->id, 2, '刪除了權限:' . $tag->name . '(' . $tag->label . ')'));
+
+        event(new \App\Events\userActionEvent('\App\Models\Admin\Permission', $tag->id, 2, auth('admin')->user()->username . "刪除了權限：" . $tag->name . "(" . $tag->label . ")"));
 
         return redirect()->back()
             ->withSuccess("刪除成功");

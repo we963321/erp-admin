@@ -111,7 +111,7 @@ class StoreController extends Controller
 
             $store->save();
 
-            event(new \App\Events\userActionEvent('\App\Models\Admin\Store', $store->id, 1, '新增了店別' . $store->name));
+            event(new \App\Events\userActionEvent('\App\Models\Admin\Store', $store->id, 1, auth('admin')->user()->username . '新增了店別：' . $store->name));
 
             DB::commit();
         }catch(\PDOException $e){
@@ -173,7 +173,7 @@ class StoreController extends Controller
 
         $store->save();
 
-        event(new \App\Events\userActionEvent('\App\Models\Admin\Store', $store->id, 3, '編輯了店別' . $store->name));
+        event(new \App\Events\userActionEvent('\App\Models\Admin\Store', $store->id, 3, auth('admin')->user()->username . '編輯了店別：' . $store->name));
 
         return redirect('/admin/store')->withSuccess('修改成功！');
     }
@@ -194,6 +194,8 @@ class StoreController extends Controller
             return redirect()->back()
                 ->withErrors("刪除失敗");
         }
+
+        event(new \App\Events\userActionEvent('\App\Models\Admin\Store', $tag->id, 2, auth('admin')->user()->username . "刪除了分店：" . $tag->name . "(" . $tag->id . ")"));
 
         return redirect()->back()
             ->withSuccess("刪除成功");

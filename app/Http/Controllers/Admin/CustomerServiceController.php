@@ -10,13 +10,14 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use DB;
 
-class CustomerCategoryController extends Controller
+class CustomerServiceController extends Controller
 {
     protected $fields = [
-        'code'          => '',
-        'name'          => '',
-        'description'   => '',
-        'status'        => 1,
+        'customer_category_id'  => '',
+        'code'                  => '',
+        'name'                  => '',
+        'description'           => '',
+        'status'                => 1,
     ];
 
     /**
@@ -34,15 +35,15 @@ class CustomerCategoryController extends Controller
             $order = $request->get('order');
             $columns = $request->get('columns');
             $search = $request->get('search');
-            $data['recordsTotal'] = CustomerCategory::count();
+            $data['recordsTotal'] = CustomerService::count();
             if (strlen($search['value']) > 0) {
 
-                $data['recordsFiltered'] = CustomerCategory::where(function ($query) use ($search) {
+                $data['recordsFiltered'] = CustomerService::where(function ($query) use ($search) {
                     $query->where('name', 'LIKE', '%' . $search['value'] . '%')
                         ->orWhere('code', 'like', '%' . $search['value'] . '%');
                 })->count();
 
-                $data['data'] = CustomerCategory::where(function ($query) use ($search) {
+                $data['data'] = CustomerService::with(['customer_category'])->where(function ($query) use ($search) {
                     $query->where('name', 'LIKE', '%' . $search['value'] . '%')
                         ->orWhere('code', 'like', '%' . $search['value'] . '%');
                 })->skip($start)->take($length)
@@ -50,8 +51,8 @@ class CustomerCategoryController extends Controller
                     ->get()->toArray();
 
             } else {
-                $data['recordsFiltered'] = CustomerCategory::count();
-                $data['data'] = CustomerCategory::skip($start)->take($length)
+                $data['recordsFiltered'] = CustomerService::count();
+                $data['data'] = CustomerService::with(['customer_category'])->skip($start)->take($length)
                     ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                     ->get()->toArray();
             }
@@ -59,7 +60,7 @@ class CustomerCategoryController extends Controller
             return response()->json($data);
         }
 
-        return view('admin.customer-category.index');
+        return view('admin.customer-service.index');
     }
 
     /**
@@ -74,7 +75,9 @@ class CustomerCategoryController extends Controller
             $data[$field] = old($field, $default);
         }
 
-        return view('admin.customer-category.create', $data);
+        $data['categoryAll'] = CustomerCategory::where('status', '1')->get()->toArray();
+
+        return view('admin.customer-service.create', $data);
     }
 
     /**
@@ -83,28 +86,28 @@ class CustomerCategoryController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Requests\CustomerCategoryCreateRequest $request)
+    public function store(Requests\CustomerServiceCreateRequest $request)
     {  
-        $customer_category = new CustomerCategory();
+        $customer_service = new CustomerService();
 
         try{
             DB::beginTransaction();
 
             foreach (array_keys($this->fields) as $field) {
-                $customer_category->$field = $request->get($field);
+                $customer_service->$field = $request->get($field);
             }
 
-            $customer_category->save();
+            $customer_service->save();
 
-            event(new \App\Events\userActionEvent('\App\Models\CustomerCategory', $customer_category->id, 1, auth('admin')->user()->username . '新增了會員種類：' . $customer_category->name));
+            event(new \App\Events\userActionEvent('\App\Models\CustomerService', $customer_service->id, 1, auth('admin')->user()->username . '新增了專屬服務：' . $customer_service->name));
 
             DB::commit();
         }catch(\PDOException $e){
             DB::rollBack();
-            return redirect('/admin/customer-category')->withErrors($e->getMessage());
+            return redirect('/admin/customer-service')->withErrors($e->getMessage());
         }
 
-        return redirect('/admin/customer-category')->withSuccess('新增成功！');
+        return redirect('/admin/customer-service')->withSuccess('新增成功！');
     }
 
     /**
@@ -126,16 +129,17 @@ class CustomerCategoryController extends Controller
      */
     public function edit($id)
     {
-        $customer_category = CustomerCategory::find((int)$id);
-        if (!$customer_category) return redirect('/admin/customer-category')->withErrors("找不到該會員種類!");
+        $customer_service = CustomerService::find((int)$id);
+        if (!$customer_service) return redirect('/admin/customer-service')->withErrors("找不到該專屬服務!");
 
         foreach (array_keys($this->fields) as $field) {
-            $data[$field] = old($field, $customer_category->$field);
+            $data[$field] = old($field, $customer_service->$field);
         }
 
+        $data['categoryAll'] = CustomerCategory::where('status', '1')->get()->toArray();
         $data['id'] = (int)$id;
         
-        return view('admin.customer-category.edit', $data);
+        return view('admin.customer-service.edit', $data);
     }
 
     /**
@@ -145,29 +149,29 @@ class CustomerCategoryController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Requests\CustomerCategoryUpdateRequest $request, $id)
+    public function update(Requests\CustomerServiceUpdateRequest $request, $id)
     {
-        $customer_category = CustomerCategory::find((int)$id);
+        $customer_service = CustomerService::find((int)$id);
 
         foreach (array_keys($this->fields) as $field) {
-            $customer_category->$field = $request->get($field);
+            $customer_service->$field = $request->get($field);
         }
 
         try{
             DB::beginTransaction();
 
-            $customer_category->save();
+            $customer_service->save();
 
-            event(new \App\Events\userActionEvent('\App\Models\CustomerCategory', $customer_category->id, 3, auth('admin')->user()->username . '編輯了會員種類：' . $customer_category->name));
+            event(new \App\Events\userActionEvent('\App\Models\CustomerService', $customer_service->id, 3, auth('admin')->user()->username . '編輯了專屬服務：' . $customer_service->name));
 
             DB::commit();
         }catch(\PDOException $e){
             DB::rollBack();
-            return redirect('/admin/customer-category')->withErrors($e->getMessage());
+            return redirect('/admin/customer-service')->withErrors($e->getMessage());
         }
 
 
-        return redirect('/admin/customer-category')->withSuccess('修改成功！');
+        return redirect('/admin/customer-service')->withSuccess('修改成功！');
     }
 
     /**
@@ -178,14 +182,7 @@ class CustomerCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $tag = CustomerCategory::find((int)$id);
-
-        $used = CustomerService::where('customer_category_id', $id)->first();
-
-        if($used){
-            return redirect()->back()
-                ->withErrors("尚有專屬服務使用[".$used->name."]，刪除失敗");
-        }
+        $tag = CustomerService::find((int)$id);
 
         if ($tag && $tag->id != 1) {
             $tag->delete();
@@ -194,7 +191,7 @@ class CustomerCategoryController extends Controller
                 ->withErrors("刪除失敗");
         }
 
-        event(new \App\Events\userActionEvent('\App\Models\CustomerCategory', $tag->id, 2, auth('admin')->user()->username . "刪除了會員種類：" . $tag->name . "(" . $tag->id . ")"));
+        event(new \App\Events\userActionEvent('\App\Models\CustomerService', $tag->id, 2, auth('admin')->user()->username . "刪除了專屬服務：" . $tag->name . "(" . $tag->id . ")"));
 
         return redirect()->back()
             ->withSuccess("刪除成功");

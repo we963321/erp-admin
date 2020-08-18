@@ -135,7 +135,7 @@ class UserController extends Controller
                 $user->giveStoreTo($request->get('stores'));
             }
 
-            event(new \App\Events\userActionEvent('\App\Models\Admin\AdminUser', $user->id, 1, '新增了用戶' . $user->name));
+            event(new \App\Events\userActionEvent('\App\Models\Admin\AdminUser', $user->id, 1, auth('admin')->user()->username . '新增了用戶：' . $user->name));
 
             DB::commit();
         }catch(\PDOException $e){
@@ -234,7 +234,7 @@ class UserController extends Controller
                 $user->giveStoreTo($request->get('stores', []));
             }
 
-            event(new \App\Events\userActionEvent('\App\Models\Admin\AdminUser', $user->id, 3, '編輯了用戶' . $user->name));
+            event(new \App\Events\userActionEvent('\App\Models\Admin\AdminUser', $user->id, 3, auth('admin')->user()->username . '編輯了用戶：' . $user->name));
 
             DB::commit();
         }catch(\PDOException $e){
@@ -269,6 +269,8 @@ class UserController extends Controller
             return redirect()->back()
                 ->withErrors("刪除失敗");
         }
+
+        event(new \App\Events\userActionEvent('\App\Models\Admin\AdminUser', $tag->id, 2, auth('admin')->user()->username . "刪除了用戶：" . $tag->name . "(" . $tag->id . ")"));
 
         return redirect()->back()
             ->withSuccess("刪除成功");

@@ -102,7 +102,7 @@ class RoleController extends Controller
         if (is_array($request->get('permissions'))) {
             $role->permissions()->sync($request->get('permissions', []));
         }
-        event(new \App\Events\userActionEvent('\App\Models\Admin\Role', $role->id, 1, "用戶" . auth('admin')->user()->username . "{" . auth('admin')->user()->id . "}新增角色" . $role->name . "{" . $role->id . "}"));
+        event(new \App\Events\userActionEvent('\App\Models\Admin\Role', $role->id, 1, "用戶" . auth('admin')->user()->username . "新增角色：" . $role->name));
 
         return redirect('/admin/role')->withSuccess('新增成功！');
     }
@@ -164,7 +164,7 @@ class RoleController extends Controller
         $role->save();
 
         $role->permissions()->sync($request->get('permissions', []));
-        event(new \App\Events\userActionEvent('\App\Models\Admin\Role', $role->id, 3, "用戶" . auth('admin')->user()->username . "{" . auth('admin')->user()->id . "}編輯角色" . $role->name . "{" . $role->id . "}"));
+        event(new \App\Events\userActionEvent('\App\Models\Admin\Role', $role->id, 3, "用戶" . auth('admin')->user()->username . "編輯角色：" . $role->name));
 
         return redirect('/admin/role')->withSuccess('修改成功！');
     }
@@ -192,7 +192,7 @@ class RoleController extends Controller
             return redirect()->back()
                 ->withErrors("刪除失敗");
         }
-        event(new \App\Events\userActionEvent('\App\Models\Admin\Role', $role->id, 2, "用戶" . auth('admin')->user()->username . "{" . auth('admin')->user()->id . "}刪除角色" . $role->name . "{" . $role->id . "}"));
+        event(new \App\Events\userActionEvent('\App\Models\Admin\Role', $role->id, 2, "用戶" . auth('admin')->user()->username . "刪除角色：" . $role->name . "(" . $role->id . ")"));
 
         return redirect()->back()
             ->withSuccess("刪除成功");

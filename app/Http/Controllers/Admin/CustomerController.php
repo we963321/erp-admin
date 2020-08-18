@@ -129,7 +129,7 @@ class CustomerController extends Controller
                 $user->giveStoreTo($request->get('stores'));
             }
 
-            event(new \App\Events\userActionEvent('\App\Models\User', $user->id, 1, '新增了客戶' . $user->name));
+            event(new \App\Events\userActionEvent('\App\Models\User', $user->id, 1, auth('admin')->user()->username . '新增了客戶：' . $user->name));
 
             DB::commit();
         }catch(\PDOException $e){
@@ -208,7 +208,7 @@ class CustomerController extends Controller
 
             $user->giveStoreTo($request->get('stores', []));
 
-            event(new \App\Events\userActionEvent('\App\Models\User', $user->id, 3, '編輯了客戶' . $user->name));
+            event(new \App\Events\userActionEvent('\App\Models\User', $user->id, 3, auth('admin')->user()->username . '編輯了客戶：' . $user->name));
 
             DB::commit();
         }catch(\PDOException $e){
@@ -240,6 +240,8 @@ class CustomerController extends Controller
             return redirect()->back()
                 ->withErrors("刪除失敗");
         }
+
+        event(new \App\Events\userActionEvent('\App\Models\User', $tag->id, 2, auth('admin')->user()->username . "刪除了客戶：" . $tag->name . "(" . $tag->id . ")"));
 
         return redirect()->back()
             ->withSuccess("刪除成功");
