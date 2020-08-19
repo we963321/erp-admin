@@ -1,13 +1,14 @@
 @extends('admin.layouts.base')
 
 @section('content')
+
     <div class="row page-title-row" style="margin:5px;">
         <div class="col-md-6">
         </div>
         <div class="col-md-6 text-right">
-            @if(Gate::forUser(auth('admin')->user())->check('role.create'))
-                <a href="/{{env('ADMIN_PREFIX')}}/role/create" class="btn btn-success btn-md">
-                    <i class="fa fa-plus-circle"></i> 新增角色
+            @if(Gate::forUser(auth('admin')->user())->check('product-category.create'))
+                <a href="/{{env('ADMIN_PREFIX')}}/product-category/create" class="btn btn-success btn-md">
+                    <i class="fa fa-plus-circle"></i> 新增產品類別
                 </a>
             @endif
         </div>
@@ -20,7 +21,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-xs-12">
             <div class="box">
                 @include('admin.partials.errors')
                 @include('admin.partials.success')
@@ -28,10 +29,10 @@
                     <table id="tags-table" class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th data-sortable="false" class="hidden-sm"></th>
-                            <th class="hidden-sm">角色名稱</th>
-                            <th class="hidden-sm">角色說明</th>
-                            <th class="hidden-sm">角色分類</th>
+                            <th data-sortable="false" class="hidden-sm">編號</th>
+                            <th class="hidden-sm">代碼</th>
+                            <th class="hidden-sm">名稱</th>
+                            <th class="hidden-sm">內容說明</th>
                             <th class="hidden-sm">狀態</th>
                             <th class="hidden-md">創建日期</th>
                             <th class="hidden-md">修改日期</th>
@@ -59,11 +60,11 @@
                 <div class="modal-body">
                     <p class="lead">
                         <i class="fa fa-question-circle fa-lg"></i>
-                        確認要刪除這個角色嗎?
+                        確認要刪除這個產品類別嗎?
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <form class="deleteForm" method="POST" action="/{{env('ADMIN_PREFIX')}}/role">
+                    <form class="deleteForm" method="POST" action="/{{env('ADMIN_PREFIX')}}/product-category">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -72,6 +73,7 @@
                         </button>
                     </form>
                 </div>
+
             </div>
             @stop
 
@@ -103,10 +105,10 @@
                                     "sSortDescending": ": 以降序排列此列"
                                 }
                             },
-                            order: [[1, "desc"]],
+                            order: [[0, "asc"]],
                             serverSide: true,
                             ajax: {
-                                url: '/{{env('ADMIN_PREFIX')}}/role/index',
+                                url: '/{{env('ADMIN_PREFIX')}}/product-category/index',
                                 type: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -114,24 +116,25 @@
                             },
                             "columns": [
                                 {"data": "id"},
+                                {"data": "code"},
                                 {"data": "name"},
                                 {"data": "description"},
-                                {"data": "type"},
                                 {"data": "status"},
                                 {"data": "created_at"},
                                 {"data": "updated_at"},
-                                {"data": "action"}
+                                {"data": "action"},
                             ],
                             columnDefs: [
                                 {
-                                    'targets': -1, "render": function (data, type, row) {
-                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check('role.edit') ? 1 : 0}};
-                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check('role.destroy') ? 1 :0}};
+                                    'targets': -1, 
+                                    "render": function (data, type, row) {
+                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check('product-category.edit') ? 1 : 0}};
+                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check('product-category.destroy') ? 1 :0}};
                                         var str = '';
 
                                         //編輯
                                         if (row_edit) {
-                                            str += '<a style="margin:3px;" href="/{{env('ADMIN_PREFIX')}}/role/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
+                                            str += '<a style="margin:3px;" href="/{{env('ADMIN_PREFIX')}}/product-category/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
                                         }
 
                                         //刪除
@@ -140,14 +143,6 @@
                                         }
 
                                         return str;
-
-                                    }
-                                },
-                                {   
-                                    //角色分類
-                                    'targets': 3,
-                                    "render": function (data, type, row) {
-                                        return renderRoleType(row['type']);
                                     }
                                 },
                                 {   
@@ -176,7 +171,7 @@
 
                         $("table").delegate('.delBtn', 'click', function () {
                             var id = $(this).attr('attr');
-                            $('.deleteForm').attr('action', '/{{env('ADMIN_PREFIX')}}/role/' + id);
+                            $('.deleteForm').attr('action', '/{{env('ADMIN_PREFIX')}}/product-category/' + id);
                             $("#modal-delete").modal();
                         });
 

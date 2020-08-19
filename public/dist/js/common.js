@@ -24,3 +24,18 @@ renderStatus=function(status){
 
 	return str;
 }
+
+renderRoleType=function(status){
+	let str = '';
+	
+	switch(status){
+		case '0':
+			str = '總公司';
+			break;
+		case '1':
+			str = '分店';
+			break;
+	}
+
+	return str;
+}

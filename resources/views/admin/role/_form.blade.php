@@ -4,13 +4,33 @@
         <input type="text" class="form-control" name="name" id="tag" value="{{ $name }}" autofocus>
     </div>
 </div>
+
 <div class="form-group">
-    <label for="tag" class="col-md-3 control-label">角色概述</label>
+    <label for="tag" class="col-md-3 control-label">角色說明</label>
     <div class="col-md-5">
         <textarea name="description" class="form-control" rows="3">{{ $description }}</textarea>
     </div>
 </div>
 
+<div class="form-group">
+    <label class="col-md-3 control-label">角色類別</label>
+    <div class="col-md-5">
+        <input type="radio" name="type" value="0" {{ ((int)$type===0) ? 'checked' : '' }}>總公司 &nbsp;
+        <input type="radio" name="type" value="1" {{ ((int)$type===1) ? 'checked' : '' }}>分店 &nbsp;
+    </div>
+</div>
+
+{{--
+<div class="form-group">
+    <label class="col-md-3 control-label">狀態</label>
+    <div class="col-md-5">
+        <input type="radio" name="status" value="1" {{ ((int)$status===1) ? 'checked' : '' }}>啟用 &nbsp;
+        <input type="radio" name="status" value="0" {{ ((int)$status===0) ? 'checked' : '' }}>停用 &nbsp;
+        <input type="radio" name="status" value="-1" {{ ((int)$status===-1) ? 'checked' : '' }}>刪除 &nbsp;
+    </div>
+</div>
+ --}}
+ 
 <div class="form-group">
     <label for="tag" class="col-md-3 control-label">權限列表</label>
 </div>

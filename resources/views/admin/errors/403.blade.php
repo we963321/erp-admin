@@ -16,7 +16,7 @@
 
             <p>
                 請洽管理員！
-                此時你可以返回<a href="{{route('admin.index')}}"> 首頁 </a>或<a href="javascript:history.back()"> 上一頁 </a>
+                此時你可以返回<a href="{{route('index')}}"> 首頁 </a>或<a href="javascript:history.back()"> 上一頁 </a>
             </p>
 
         </div>

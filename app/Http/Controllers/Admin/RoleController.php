@@ -19,6 +19,8 @@ class RoleController extends Controller
         'name'        => '',
         'description' => '',
         'permissions' => [],
+        //'status'      => 1,
+        'type'        => 0,
     ];
 
 
