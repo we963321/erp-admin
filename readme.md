@@ -9,3 +9,11 @@
 - 执行 `php artisan migrate:refresh --seed`
 - 键入 '域名/admin/login'(后台登录)
 - 默认后台账号:admin@gmail.com 密码:123456
+
+## Location 地區
+
+地區資料+++
+
+```sh
+    php artisan db:seed --class="LocationSeeder"
+```
