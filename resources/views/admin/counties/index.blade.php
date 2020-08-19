@@ -111,7 +111,7 @@ $resourceName = 'counties';
                             order: [[0, "asc"]],
                             serverSide: true,
                             ajax: {
-                                url: '{{ route('admin.' . $resourceName . '.index') }}',
+                                url: '{{ route('admin.' . $resourceName . '.datatable') }}',
                                 type: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
