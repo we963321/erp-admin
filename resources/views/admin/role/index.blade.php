@@ -5,8 +5,8 @@
         <div class="col-md-6">
         </div>
         <div class="col-md-6 text-right">
-            @if(Gate::forUser(auth('admin')->user())->check('admin.role.create'))
-                <a href="/admin/role/create" class="btn btn-success btn-md">
+            @if(Gate::forUser(auth('admin')->user())->check('role.create'))
+                <a href="/{{env('ADMIN_PREFIX')}}/role/create" class="btn btn-success btn-md">
                     <i class="fa fa-plus-circle"></i> 新增角色
                 </a>
             @endif
@@ -61,7 +61,7 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <form class="deleteForm" method="POST" action="/admin/role">
+                    <form class="deleteForm" method="POST" action="/{{env('ADMIN_PREFIX')}}/role">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -104,7 +104,7 @@
                             order: [[1, "desc"]],
                             serverSide: true,
                             ajax: {
-                                url: '/admin/role/index',
+                                url: '/{{env('ADMIN_PREFIX')}}/role/index',
                                 type: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -121,13 +121,13 @@
                             columnDefs: [
                                 {
                                     'targets': -1, "render": function (data, type, row) {
-                                    var row_edit = {{Gate::forUser(auth('admin')->user())->check('admin.role.edit') ? 1 : 0}};
-                                    var row_delete = {{Gate::forUser(auth('admin')->user())->check('admin.role.destroy') ? 1 :0}};
+                                    var row_edit = {{Gate::forUser(auth('admin')->user())->check('role.edit') ? 1 : 0}};
+                                    var row_delete = {{Gate::forUser(auth('admin')->user())->check('role.destroy') ? 1 :0}};
                                     var str = '';
 
                                     //編輯
                                     if (row_edit) {
-                                        str += '<a style="margin:3px;" href="/admin/role/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
+                                        str += '<a style="margin:3px;" href="/{{env('ADMIN_PREFIX')}}/role/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
                                     }
 
                                     //刪除
@@ -158,7 +158,7 @@
 
                         $("table").delegate('.delBtn', 'click', function () {
                             var id = $(this).attr('attr');
-                            $('.deleteForm').attr('action', '/admin/role/' + id);
+                            $('.deleteForm').attr('action', '/{{env('ADMIN_PREFIX')}}/role/' + id);
                             $("#modal-delete").modal();
                         });
 

@@ -33,7 +33,7 @@
             <!-- Optionally, you can add icons to the links -->
 
             @if(Auth::guard('admin')->user()->id === 1) 
-            <li><a href="/admin"><i class="fa fa-dashboard"></i> <span>控制面板</span></a></li>
+            <li><a href="/{{env('ADMIN_PREFIX')}}"><i class="fa fa-dashboard"></i> <span>控制面板</span></a></li>
             @endif 
             
             <?php $comData=Request::get('comData_menu'); ?>

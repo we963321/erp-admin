@@ -123,7 +123,7 @@ class UserController extends Controller
 
             if(\Gate::forUser(auth('admin')->user())->check('admin.role.edit')){
                 if(empty($request->get('roles'))){
-                    return redirect('/admin/user')->withErrors("請先新增角色!");
+                    return redirect('/'.env('ADMIN_PREFIX').'/user')->withErrors("請先新增角色!");
                 }
 
                 if (is_array($request->get('roles'))) {
@@ -140,10 +140,10 @@ class UserController extends Controller
             DB::commit();
         }catch(\PDOException $e){
             DB::rollBack();
-            return redirect('/admin/user')->withErrors($e->getMessage());
+            return redirect('/'.env('ADMIN_PREFIX').'/user')->withErrors($e->getMessage());
         }
 
-        return redirect('/admin/user')->withSuccess('新增成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/user')->withSuccess('新增成功！');
     }
 
     /**
@@ -166,7 +166,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find((int)$id);
-        if (!$user) return redirect('/admin/user')->withErrors("找不到該用戶!");
+        if (!$user) return redirect('/'.env('ADMIN_PREFIX').'/user')->withErrors("找不到該用戶!");
         $roles = [];
         if ($user->roles) {
             foreach ($user->roles as $v) {
@@ -207,7 +207,7 @@ class UserController extends Controller
 
         //禁止他人修改最高權限
         if($id == 1 && $id != auth('admin')->user()->id){
-            return redirect('/admin/user')->withErrors("您沒有權限修改!");
+            return redirect('/'.env('ADMIN_PREFIX').'/user')->withErrors("您沒有權限修改!");
         }
 
         foreach (array_keys($this->fields) as $field) {
@@ -239,11 +239,11 @@ class UserController extends Controller
             DB::commit();
         }catch(\PDOException $e){
             DB::rollBack();
-            return redirect('/admin/user')->withErrors($e->getMessage());
+            return redirect('/'.env('ADMIN_PREFIX').'/user')->withErrors($e->getMessage());
         }
 
 
-        return redirect('/admin/user')->withSuccess('修改成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/user')->withSuccess('修改成功！');
     }
 
     /**

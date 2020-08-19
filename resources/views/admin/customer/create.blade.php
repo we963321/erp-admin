@@ -13,7 +13,7 @@
                         <div class="panel-body">
                             @include('admin.partials.errors')
                             @include('admin.partials.success')
-                            <form class="form-horizontal" role="form" method="POST" action="/admin/customer">
+                            <form class="form-horizontal" role="form" method="POST" action="/{{env('ADMIN_PREFIX')}}/customer">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 @include('admin.customer._form')
                                 <div class="form-group">

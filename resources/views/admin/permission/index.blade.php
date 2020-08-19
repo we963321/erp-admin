@@ -9,15 +9,15 @@
             @else
                 <span style="margin:3px;" id="cid" attr="{{$cid}}" class="text-info"> {{$data->display_name}}
                         </span>
-                <a style="margin:3px;" href="/admin/permission"
+                <a style="margin:3px;" href="/{{env('ADMIN_PREFIX')}}/permission"
                    class="btn btn-warning btn-md animation-shake reloadBtn"><i class="fa fa-mail-reply-all"></i> 返回頂級列表
                 </a>
             @endif
         </div>
 
         <div class="col-md-6 text-right">
-    @if(Gate::forUser(auth('admin')->user())->check('admin.permission.create'))
-        <a href="/admin/permission/{{$cid}}/create" class="btn btn-success btn-md"><i class="fa fa-plus-circle"></i> 新增權限 </a>
+    @if(Gate::forUser(auth('admin')->user())->check('permission.create'))
+        <a href="/{{env('ADMIN_PREFIX')}}/permission/{{$cid}}/create" class="btn btn-success btn-md"><i class="fa fa-plus-circle"></i> 新增權限 </a>
     @endif
 </div>
 </div>
@@ -71,7 +71,7 @@
             </p>
         </div>
         <div class="modal-footer">
-            <form class="deleteForm" method="POST" action="/admin/list">
+            <form class="deleteForm" method="POST" action="/{{env('ADMIN_PREFIX')}}/list">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="_method" value="DELETE">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -118,7 +118,7 @@
                     serverSide: true,
 
                     ajax: {
-                        url: '/admin/permission/index',
+                        url: '/{{env('ADMIN_PREFIX')}}/permission/index',
                         type: 'POST',
                         data: function (d) {
                             d.cid = cid;
@@ -139,18 +139,18 @@
                     columnDefs: [
                         {
                             'targets': -1, "render": function (data, type, row) {
-                            var row_edit = {{Gate::forUser(auth('admin')->user())->check('admin.permission.edit') ? 1 : 0}};
-                            var row_delete = {{Gate::forUser(auth('admin')->user())->check('admin.permission.destroy') ? 1 :0}};
+                            var row_edit = {{Gate::forUser(auth('admin')->user())->check('permission.edit') ? 1 : 0}};
+                            var row_delete = {{Gate::forUser(auth('admin')->user())->check('permission.destroy') ? 1 :0}};
                             var str = '';
 
                             //下級列表
                             if (cid == 0) {
-                                str += '<a style="margin:3px;"  href="/admin/permission/' + row['id'] + '" class="X-Small btn-xs text-success "><i class="fa fa-adn"></i>下級列表</a>';
+                                str += '<a style="margin:3px;"  href="/{{env('ADMIN_PREFIX')}}/permission/' + row['id'] + '" class="X-Small btn-xs text-success "><i class="fa fa-adn"></i>下級列表</a>';
                             }
 
                             //編輯
                             if (row_edit) {
-                                str += '<a style="margin:3px;" href="/admin/permission/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
+                                str += '<a style="margin:3px;" href="/{{env('ADMIN_PREFIX')}}/permission/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
                             }
 
                             //刪除
@@ -181,7 +181,7 @@
 
                 $("table").delegate('.delBtn', 'click', function () {
                     var id = $(this).attr('attr');
-                    $('.deleteForm').attr('action', '/admin/permission/' + id);
+                    $('.deleteForm').attr('action', '/{{env('ADMIN_PREFIX')}}/permission/' + id);
                     $("#modal-delete").modal();
                 });
 

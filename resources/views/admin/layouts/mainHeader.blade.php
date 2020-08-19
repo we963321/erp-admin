@@ -1,7 +1,7 @@
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="/admin" class="logo">
+    <a href="/{{env('ADMIN_PREFIX')}}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>Admin System</b></span>
       <!-- logo for regular state and mobile devices -->
@@ -40,12 +40,13 @@
               <!-- Menu Footer-->
               <li class="user-footer">
 
+                {{--
                 <div class="pull-left">
-                  <a href="/admin/user/{{auth('admin')->user()->id}}/edit" class="btn btn-default btn-flat">編輯</a>
+                  <a href="/{{env('ADMIN_PREFIX')}}/user/{{auth('admin')->user()->id}}/edit" class="btn btn-default btn-flat">編輯</a>
                 </div>
-
+                --}}
                 <div class="pull-right">
-                  <a href="/admin/logout" class="btn btn-default btn-flat">登出</a>
+                  <a href="/{{env('ADMIN_PREFIX')}}/logout" class="btn btn-default btn-flat">登出</a>
                 </div>
               </li>
             </ul>

@@ -84,7 +84,7 @@ class StoreController extends Controller
 
         $admin_user = User::select(['id', 'name', 'emp_id', 'mobile'])->where('status', '1')->get()->toArray();
         if(empty($admin_user)){
-            return redirect('/admin/store')->withErrors("請您先新增管理員");
+            return redirect('/'.env('ADMIN_PREFIX').'/store')->withErrors("請您先新增管理員");
         }
 
         $data['admin_user'] = $admin_user;
@@ -119,7 +119,7 @@ class StoreController extends Controller
             throw new \Exception($e->getMessage(), 1);
         }
 
-        return redirect('/admin/store')->withSuccess('新增成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/store')->withSuccess('新增成功！');
     }
 
     /**
@@ -142,7 +142,7 @@ class StoreController extends Controller
     public function edit($id)
     {
         $store = Store::find((int)$id);
-        if (!$store) return redirect('/admin/store')->withErrors("找不到該店別!");
+        if (!$store) return redirect('/'.env('ADMIN_PREFIX').'/store')->withErrors("找不到該店別!");
 
         foreach (array_keys($this->fields) as $field) {
             $data[$field] = old($field, $store->$field);
@@ -175,7 +175,7 @@ class StoreController extends Controller
 
         event(new \App\Events\userActionEvent('\App\Models\Admin\Store', $store->id, 3, auth('admin')->user()->username . '編輯了店別：' . $store->name));
 
-        return redirect('/admin/store')->withSuccess('修改成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/store')->withSuccess('修改成功！');
     }
 
     /**

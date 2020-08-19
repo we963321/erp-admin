@@ -25,11 +25,12 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
+    protected $redirectTo;
     protected $username;
 
     public function __construct()
     {
+        $this->redirectTo = '/'. env('ADMIN_PREFIX');
         $this->middleware('guest:admin', ['except' => 'logout']);
     }
 
@@ -51,7 +52,7 @@ class LoginController extends Controller
 
         request()->session()->regenerate();*/
 
-        return redirect('/admin/login');
+        return redirect('/'.env('ADMIN_PREFIX').'/login');
     }
 
 }

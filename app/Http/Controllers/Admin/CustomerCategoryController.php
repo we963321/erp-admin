@@ -101,10 +101,10 @@ class CustomerCategoryController extends Controller
             DB::commit();
         }catch(\PDOException $e){
             DB::rollBack();
-            return redirect('/admin/customer-category')->withErrors($e->getMessage());
+            return redirect('/'.env('ADMIN_PREFIX').'/customer-category')->withErrors($e->getMessage());
         }
 
-        return redirect('/admin/customer-category')->withSuccess('新增成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/customer-category')->withSuccess('新增成功！');
     }
 
     /**
@@ -127,7 +127,7 @@ class CustomerCategoryController extends Controller
     public function edit($id)
     {
         $customer_category = CustomerCategory::find((int)$id);
-        if (!$customer_category) return redirect('/admin/customer-category')->withErrors("找不到該會員種類!");
+        if (!$customer_category) return redirect('/'.env('ADMIN_PREFIX').'/customer-category')->withErrors("找不到該會員種類!");
 
         foreach (array_keys($this->fields) as $field) {
             $data[$field] = old($field, $customer_category->$field);
@@ -163,11 +163,11 @@ class CustomerCategoryController extends Controller
             DB::commit();
         }catch(\PDOException $e){
             DB::rollBack();
-            return redirect('/admin/customer-category')->withErrors($e->getMessage());
+            return redirect('/'.env('ADMIN_PREFIX').'/customer-category')->withErrors($e->getMessage());
         }
 
 
-        return redirect('/admin/customer-category')->withSuccess('修改成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/customer-category')->withSuccess('修改成功！');
     }
 
     /**

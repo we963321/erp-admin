@@ -34,7 +34,7 @@
     <!-- /.login-logo -->
     <div class="login-box-body">
 
-        <form action="{{ url('/admin/login') }}" method="post">
+        <form action="/{{env('ADMIN_PREFIX')}}/login" method="post">
             {!! csrf_field() !!}
             <div class="form-group has-feedback">
                 <input type="email" class="form-control" placeholder="信箱"  name="email" value="{{ old('email') }}">
@@ -63,7 +63,7 @@
         <!-- /.social-auth-links -->
 
         {{--<a href="#">我忘了密碼</a><br>--}}
-        {{--<a href="/admin/customer/register" class="text-center">註冊</a>--}}
+        {{--<a href="/{{env('ADMIN_PREFIX')}}/customer/register" class="text-center">註冊</a>--}}
 
     </div>
     <!-- /.login-box-body -->

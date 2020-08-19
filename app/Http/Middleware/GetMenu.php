@@ -34,9 +34,11 @@ class GetMenu
         //查找並拼接出地址的別名值
         $path_arr = explode('/', \URL::getRequest()->path());
         if (isset($path_arr[1])) {
-            $urlPath = $path_arr[0] . '.' . $path_arr[1] . '.index';
+            //$urlPath = $path_arr[0] . '.' . $path_arr[1] . '.index';
+            $urlPath = $path_arr[1] . '.index';
         } else {
-            $urlPath = $path_arr[0] . '.index';
+            //$urlPath = $path_arr[0] . '.index';
+            $urlPath = 'index';
         }
         //查找出所有的地址
         $table = Cache::store('file')->rememberForever('menus', function () {

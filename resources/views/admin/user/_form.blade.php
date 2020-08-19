@@ -12,7 +12,7 @@
     <label class="col-md-3 control-label">管理分店</label>
     <div class="col-md-5">
         @foreach($store_manager as $key => $val)
-        <a href="/admin/store/{{$val['id']}}/edit" class="control-label">{{ $val['name'] }}</a>
+        <a href="/{{env('ADMIN_PREFIX')}}/store/{{$val['id']}}/edit" class="control-label">{{ $val['name'] }}</a>
         @if($val !== end($store_manager))
         ,&nbsp;
         @endif
@@ -91,7 +91,7 @@
 </div>
 
 
-@if(Gate::forUser(auth('admin')->user())->check('admin.role.edit'))
+@if(Gate::forUser(auth('admin')->user())->check('role.edit'))
 <div class="form-group">
     <label class="col-md-3 control-label">角色列表</label>
     @if(isset($id)&&$id==1)

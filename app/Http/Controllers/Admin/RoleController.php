@@ -104,7 +104,7 @@ class RoleController extends Controller
         }
         event(new \App\Events\userActionEvent('\App\Models\Admin\Role', $role->id, 1, "用戶" . auth('admin')->user()->username . "新增角色：" . $role->name));
 
-        return redirect('/admin/role')->withSuccess('新增成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/role')->withSuccess('新增成功！');
     }
 
     /**
@@ -127,7 +127,7 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::find((int)$id);
-        if (!$role) return redirect('/admin/role')->withErrors("找不到該角色!");
+        if (!$role) return redirect('/'.env('ADMIN_PREFIX').'/role')->withErrors("找不到該角色!");
         $permissions = [];
         if ($role->permissions) {
             foreach ($role->permissions as $v) {
@@ -166,7 +166,7 @@ class RoleController extends Controller
         $role->permissions()->sync($request->get('permissions', []));
         event(new \App\Events\userActionEvent('\App\Models\Admin\Role', $role->id, 3, "用戶" . auth('admin')->user()->username . "編輯角色：" . $role->name));
 
-        return redirect('/admin/role')->withSuccess('修改成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/role')->withSuccess('修改成功！');
     }
 
     /**

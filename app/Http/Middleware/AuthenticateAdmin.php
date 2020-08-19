@@ -25,7 +25,10 @@ class AuthenticateAdmin
         }
 
         $previousUrl = URL::previous();
-        $routeName = starts_with(Route::currentRouteName(), 'admin.') ? Route::currentRouteName() : 'admin.' . Route::currentRouteName();
+        //$routeName = starts_with(Route::currentRouteName(), 'admin.') ? Route::currentRouteName() : 'admin.' . Route::currentRouteName();
+
+        $routeName = Route::currentRouteName();
+
         if (!\Gate::forUser(auth('admin')->user())->check($routeName)) {
             if ($request->ajax() && ($request->getMethod() != 'GET')) {
                 return response()->json([
@@ -34,7 +37,7 @@ class AuthenticateAdmin
                     'msg'    => '您沒有權限執行此操作',
                 ]);
             } else {
-                if($routeName == 'admin.index'){
+                if($routeName == 'index'){
                     return response()->view('admin.index.home');
                 }
                 return response()->view('admin.errors.403', compact('previousUrl'));

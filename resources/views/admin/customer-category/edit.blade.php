@@ -15,7 +15,7 @@
                             @include('admin.partials.errors')
                             @include('admin.partials.success')
                             <form class="form-horizontal" role="form" method="POST"
-                                  action="/admin/customer-category/{{ $id }}">
+                                  action="/{{env('ADMIN_PREFIX')}}/customer-category/{{ $id }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="_method" value="PUT">
                                 <input type="hidden" name="id" value="{{ $id }}">

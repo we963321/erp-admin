@@ -41,7 +41,7 @@
               <li class="user-footer">
 
                 <!--<div class="pull-left">
-                  <a href="/admin/user/{{auth('web')->user()->id}}/edit" class="btn btn-default btn-flat">編輯</a>
+                  <a href="/{{env('ADMIN_PREFIX')}}/user/{{auth('web')->user()->id}}/edit" class="btn btn-default btn-flat">編輯</a>
                 </div>-->
 
                 <div class="pull-right">

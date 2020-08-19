@@ -15,7 +15,7 @@
                             @include('admin.partials.errors')
                             @include('admin.partials.success')
 
-                            <form class="form-horizontal" role="form" method="POST" action="/admin/store">
+                            <form class="form-horizontal" role="form" method="POST" action="/{{env('ADMIN_PREFIX')}}/store">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 @include('admin.store._form')
                                 <div class="form-group">

@@ -100,7 +100,7 @@ desired effect
               <small>@yield('pageDesc')</small>
             </h1>
             <ol class="breadcrumb">
-              <li><a href="/admin"><i class="fa fa-dashboard"></i> 控制面板</a></li>
+              <li><a href="/{{env('ADMIN_PREFIX')}}"><i class="fa fa-dashboard"></i> 控制面板</a></li>
               <li class="active">Here</li>
             </ol>--}}
             <h6>

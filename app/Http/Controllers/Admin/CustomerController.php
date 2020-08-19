@@ -134,10 +134,10 @@ class CustomerController extends Controller
             DB::commit();
         }catch(\PDOException $e){
             DB::rollBack();
-            return redirect('/admin/customer')->withErrors($e->getMessage());
+            return redirect('/'.env('ADMIN_PREFIX').'/customer')->withErrors($e->getMessage());
         }
 
-        return redirect('/admin/customer')->withSuccess('新增成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/customer')->withSuccess('新增成功！');
     }
 
     /**
@@ -160,7 +160,7 @@ class CustomerController extends Controller
     public function edit($id)
     {
         $user = User::find((int)$id);
-        if (!$user) return redirect('/admin/customer')->withErrors("找不到該客戶!");
+        if (!$user) return redirect('/'.env('ADMIN_PREFIX').'/customer')->withErrors("找不到該客戶!");
 
         $stores = [];
         if ($user->stores) {
@@ -213,11 +213,11 @@ class CustomerController extends Controller
             DB::commit();
         }catch(\PDOException $e){
             DB::rollBack();
-            return redirect('/admin/customer')->withErrors($e->getMessage());
+            return redirect('/'.env('ADMIN_PREFIX').'/customer')->withErrors($e->getMessage());
         }
 
 
-        return redirect('/admin/customer')->withSuccess('修改成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/customer')->withSuccess('修改成功！');
     }
 
     /**

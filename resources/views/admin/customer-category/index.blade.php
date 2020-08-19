@@ -6,8 +6,8 @@
         <div class="col-md-6">
         </div>
         <div class="col-md-6 text-right">
-            @if(Gate::forUser(auth('admin')->user())->check('admin.customer-category.create'))
-                <a href="/admin/customer-category/create" class="btn btn-success btn-md">
+            @if(Gate::forUser(auth('admin')->user())->check('customer-category.create'))
+                <a href="/{{env('ADMIN_PREFIX')}}/customer-category/create" class="btn btn-success btn-md">
                     <i class="fa fa-plus-circle"></i> 新增會員種類
                 </a>
             @endif
@@ -64,7 +64,7 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <form class="deleteForm" method="POST" action="/admin/customer-category">
+                    <form class="deleteForm" method="POST" action="/{{env('ADMIN_PREFIX')}}/customer-category">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -108,7 +108,7 @@
                             order: [[0, "asc"]],
                             serverSide: true,
                             ajax: {
-                                url: '/admin/customer-category/index',
+                                url: '/{{env('ADMIN_PREFIX')}}/customer-category/index',
                                 type: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -128,13 +128,13 @@
                                 {
                                     'targets': -1, 
                                     "render": function (data, type, row) {
-                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check('admin.customer-category.edit') ? 1 : 0}};
-                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check('admin.customer-category.destroy') ? 1 :0}};
+                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check('customer-category.edit') ? 1 : 0}};
+                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check('customer-category.destroy') ? 1 :0}};
                                         var str = '';
 
                                         //編輯
                                         if (row_edit) {
-                                            str += '<a style="margin:3px;" href="/admin/customer-category/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
+                                            str += '<a style="margin:3px;" href="/{{env('ADMIN_PREFIX')}}/customer-category/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
                                         }
 
                                         //刪除
@@ -185,7 +185,7 @@
 
                         $("table").delegate('.delBtn', 'click', function () {
                             var id = $(this).attr('attr');
-                            $('.deleteForm').attr('action', '/admin/customer-category/' + id);
+                            $('.deleteForm').attr('action', '/{{env('ADMIN_PREFIX')}}/customer-category/' + id);
                             $("#modal-delete").modal();
                         });
 

@@ -104,10 +104,10 @@ class CustomerServiceController extends Controller
             DB::commit();
         }catch(\PDOException $e){
             DB::rollBack();
-            return redirect('/admin/customer-service')->withErrors($e->getMessage());
+            return redirect('/'.env('ADMIN_PREFIX').'/customer-service')->withErrors($e->getMessage());
         }
 
-        return redirect('/admin/customer-service')->withSuccess('新增成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/customer-service')->withSuccess('新增成功！');
     }
 
     /**
@@ -130,7 +130,7 @@ class CustomerServiceController extends Controller
     public function edit($id)
     {
         $customer_service = CustomerService::find((int)$id);
-        if (!$customer_service) return redirect('/admin/customer-service')->withErrors("找不到該專屬服務!");
+        if (!$customer_service) return redirect('/'.env('ADMIN_PREFIX').'/customer-service')->withErrors("找不到該專屬服務!");
 
         foreach (array_keys($this->fields) as $field) {
             $data[$field] = old($field, $customer_service->$field);
@@ -167,11 +167,11 @@ class CustomerServiceController extends Controller
             DB::commit();
         }catch(\PDOException $e){
             DB::rollBack();
-            return redirect('/admin/customer-service')->withErrors($e->getMessage());
+            return redirect('/'.env('ADMIN_PREFIX').'/customer-service')->withErrors($e->getMessage());
         }
 
 
-        return redirect('/admin/customer-service')->withSuccess('修改成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/customer-service')->withSuccess('修改成功！');
     }
 
     /**

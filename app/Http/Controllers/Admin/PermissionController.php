@@ -106,7 +106,7 @@ class PermissionController extends Controller
         Event::fire(new permChangeEvent());
         event(new \App\Events\userActionEvent('\App\Models\Admin\Permission', $permission->id, 1, '新增了權限：' . $permission->name . '(' . $permission->label . ')'));
 
-        return redirect('/admin/permission/' . $permission->cid)->withSuccess('新增成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/permission/' . $permission->cid)->withSuccess('新增成功！');
     }
 
     /**
@@ -129,7 +129,7 @@ class PermissionController extends Controller
     public function edit($id)
     {
         $permission = Permission::find((int)$id);
-        if (!$permission) return redirect('/admin/permission')->withErrors("找不到該權限!");
+        if (!$permission) return redirect('/'.env('ADMIN_PREFIX').'/permission')->withErrors("找不到該權限!");
         $data = ['id' => (int)$id];
         foreach (array_keys($this->fields) as $field) {
             $data[$field] = old($field, $permission->$field);
