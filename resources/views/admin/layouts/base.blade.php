@@ -45,7 +45,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
     <!-- datepicker -->
-    <script src="/dist/js/1.12.4.jquery.js"></script>
+    <script src="/dist/js/1.9.1.jquery.min.js"></script>
     <script src="/dist/js/1.12.1.jquery-ui.js"></script>
 
     <!-- Bootstrap 3.3.6 -->

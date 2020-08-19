@@ -16,6 +16,7 @@ class CreateStoreTable extends Migration
         Schema::create('store', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->smallInteger('admin_user_id')->default(0)->comment('管理者ID');
+            $table->string('code', 10)->comment('代碼');
             $table->string('name', 50)->comment('店別名稱');
             $table->string('short_name', 10)->comment('店別簡稱');
             $table->string('description', 200)->nullable()->comment('店別說明');
@@ -24,7 +25,7 @@ class CreateStoreTable extends Migration
             $table->string('town', 10)->nullable()->comment('鄉鎮區');
             $table->string('address', 50)->nullable()->comment('地址');
             $table->string('remark', 500)->nullable()->comment('備註');
-            $table->enum('status', [0, 1])->default(1)->comment('狀態 1=啟用, 0=停用');
+            $table->enum('status', [-1, 0, 1])->default(1)->comment('狀態 1=啟用, 0=停用, -1=刪除');
             $table->timestamps();
         });
     }

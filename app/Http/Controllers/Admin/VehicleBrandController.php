@@ -98,7 +98,7 @@ class VehicleBrandController extends Controller
             $model->fill($data);
             $model->save();
 
-            event(new \App\Events\userActionEvent('\App\Models\User', $model->id, 1, auth('admin')->user()->username . '新增了車輛品牌：' . $model->code));
+            event(new \App\Events\userActionEvent('\App\Models\CarBrand', $model->id, 1, auth('admin')->user()->username . '新增了車輛品牌：' . $model->name));
 
             DB::commit();
         } catch (\PDOException $e) {
@@ -163,7 +163,7 @@ class VehicleBrandController extends Controller
             $model->fill($data);
             $model->save();
 
-            event(new \App\Events\userActionEvent('\App\Models\User', $model->id, 3, auth('admin')->user()->username . '編輯了車輛品牌：' . $model->name));
+            event(new \App\Events\userActionEvent('\App\Models\CarBrand', $model->id, 3, auth('admin')->user()->username . '編輯了車輛品牌：' . $model->name));
 
             DB::commit();
         } catch (\PDOException $e) {
@@ -197,7 +197,7 @@ class VehicleBrandController extends Controller
                 ->withErrors("刪除失敗");
         }
 
-        event(new \App\Events\userActionEvent('\App\Models\User', $model->id, 2, auth('admin')->user()->username . "刪除了車輛種類：" . $model->name . "(" . $model->id . ")"));
+        event(new \App\Events\userActionEvent('\App\Models\CarBrand', $model->id, 2, auth('admin')->user()->username . "刪除了車輛種類：" . $model->name . "(" . $model->id . ")"));
 
         return redirect()->back()
             ->withSuccess("刪除成功");

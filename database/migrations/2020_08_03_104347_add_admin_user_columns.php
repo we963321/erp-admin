@@ -21,7 +21,7 @@ class AddAdminUserColumns extends Migration
             $table->string('id_number', 10)->after('mobile')->comment('身分證號');
             $table->string('address', 120)->after('id_number')->nullable()->comment('地址');
             $table->date('birthday')->after('address')->nullable()->comment('生日');
-            $table->enum('status', [0, 1])->default(1)->after('birthday')->comment('狀態 1=啟用, 0=停用');
+            $table->enum('status', [-1, 0, 1])->default(1)->after('birthday')->comment('狀態 1=啟用, 0=停用, -1=刪除');
         });
     }
 

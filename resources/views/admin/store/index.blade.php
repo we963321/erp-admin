@@ -31,10 +31,11 @@
                         <thead>
                         <tr>
                             <th data-sortable="false" class="hidden-sm">編號</th>
-                            <th data-sortable="false">管理員 / 員工編號 / 電話</th>
+                            <th class="hidden-sm">分店代碼</th>
                             <th class="hidden-sm">分店簡稱</th>
                             <th class="hidden-md">分店名稱</th>
                             <th class="hidden-md">分店電話</th>
+                            <th data-sortable="false">管理員</th>
                             <th data-sortable="false">操作</th>
                         </tr>
                         </thead>
@@ -115,10 +116,11 @@
                             },
                             "columns": [
                                 {"data": "id"},
-                                {"data": "admin_user_id"},
+                                {"data": "code"},
                                 {"data": "short_name"},
                                 {"data": "name"},
                                 {"data": "mobile"},
+                                {"data": "admin_user_id"},
                                 {"data": "action"},
                             ],
                             columnDefs: [
@@ -144,10 +146,10 @@
                                 },
                                 {   
                                     //管理員
-                                    'targets': 1, 
+                                    'targets': -2, 
                                     "render": function (data, type, row) {
                                         let admin_user = row['admin_user'];
-                                        let str = `<a href="/{{env('ADMIN_PREFIX')}}/user/${admin_user.id}/edit">` + admin_user.name + ' / ' + admin_user.emp_id + ' / ' + admin_user.mobile + '</a>';
+                                        let str = `<a href="/{{env('ADMIN_PREFIX')}}/user/${admin_user.id}/edit" target="_blank">` + admin_user.name + '</a>';
                                         return str;
                                     }
                                 }

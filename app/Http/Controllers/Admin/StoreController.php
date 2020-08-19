@@ -14,6 +14,7 @@ class StoreController extends Controller
 {
     protected $fields = [
         'admin_user_id' => '',
+        'code'          => '',
         'name'          => '',
         'short_name'    => '',
         'description'   => '',
@@ -109,6 +110,16 @@ class StoreController extends Controller
                 $store->$field = $request->get($field);
             }
 
+            $store->code = 0;
+            $store->save();
+
+            //自產編號
+            $zero_num = 5 - strlen($store->id);
+            $prefix = '';
+            for($i = 0; $i <= $zero_num; $i++){
+                $prefix .= '0';
+            }
+            $store->code = 'A'.$prefix.$store->id;
             $store->save();
 
             event(new \App\Events\userActionEvent('\App\Models\Admin\Store', $store->id, 1, auth('admin')->user()->username . '新增了店別：' . $store->name));

@@ -149,21 +149,7 @@
                                     //狀態
                                     'targets': 4, 
                                     "render": function (data, type, row) {
-                                        let status = row['status'];
-                                        let str = '';
-                                        switch(status){
-                                            case '0':
-                                                str = '停用';
-                                                break;
-                                            case '1':
-                                                str = '啟用';
-                                                break;
-                                            case '-1':
-                                                str = '刪除';
-                                                break;
-                                        }
-
-                                        return str;
+                                        return renderStatus(row['status']);
                                     }
                                 }
                             ]

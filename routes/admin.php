@@ -16,9 +16,6 @@ Route::post('login', 'LoginController@login');
 Route::get('logout', 'LoginController@logout');
 Route::post('logout', 'LoginController@logout');
 
-//Route::get('/', 'IndexController@index');
-
-
 Route::group(['prefix' => 'errors'], function () {
     Route::get('403', function () {
         return view('admin.errors.403');
@@ -33,7 +30,6 @@ Route::group(['prefix' => 'errors'], function () {
     });
 });
 
-//Route::get('customer/register', 'CustomerController@register'); 
 Route::post('customer/register', 'CustomerController@store');
 
 Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () {

@@ -28,7 +28,7 @@ class AddUserColumns extends Migration
             $table->string('line', 50)->nullable()->comment('line');
             $table->string('facebook', 255)->nullable()->comment('facebook');
             $table->string('tax_number', 10)->nullable()->comment('統一編號');
-            $table->enum('status', [0, 1])->default(1)->comment('狀態 1=啟用, 0=停用');
+            $table->enum('status', [-1, 0, 1])->default(1)->comment('狀態 1=啟用, 0=停用, -1=刪除');
         });
     }
 

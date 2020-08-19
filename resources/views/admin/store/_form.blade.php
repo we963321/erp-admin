@@ -1,18 +1,12 @@
+@if(!empty($code))
 <div class="form-group">
-    <label class="col-md-3 control-label">管理員</label>
+    <label class="col-md-3 control-label">代碼</label>
     <div class="col-md-5">
-        <select name="admin_user_id" autofocus>
-            <option value="">請選擇</option>
-
-             @foreach($admin_user as $val)
-                <option value="{{ $val['id'] }}" @if($admin_user_id == $val['id']) selected @endif >
-                    {{ $val['name'] }} / {{ $val['emp_id'] }} / {{ $val['mobile'] }}
-                </option>
-             @endforeach
-
-        </select>
+       <label class="control-label">{{ $code }}</label>
     </div>
 </div>
+@endif
+
 <div class="form-group">
     <label class="col-md-3 control-label">*名稱</label>
     <div class="col-md-5">
@@ -66,6 +60,22 @@
     <label class="col-md-3 control-label">地址</label>
     <div class="col-md-5">
         <input type="text" class="form-control" name="address" value="{{ $address }}">
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-3 control-label">管理員</label>
+    <div class="col-md-5">
+        <select name="admin_user_id" autofocus>
+            <option value="">請選擇 (名稱 / 員工編號 / 電話)</option>
+
+             @foreach($admin_user as $val)
+                <option value="{{ $val['id'] }}" @if($admin_user_id == $val['id']) selected @endif >
+                    {{ $val['name'] }} / {{ $val['emp_id'] }} / {{ $val['mobile'] }}
+                </option>
+             @endforeach
+
+        </select>
     </div>
 </div>
 
