@@ -11,8 +11,11 @@ class LocationSeeder extends Seeder
 	 */
 	public function run()
 	{
+		DB::table('locations')->truncate();
+
 		$today = date('Y-m-d H:i:s');
 		$iterator = $country = 1;
+		$cityIterator = 2;
 
 		$locations = [];
 		$locations[] = [
@@ -34,7 +37,7 @@ class LocationSeeder extends Seeder
 
 			$locations[] = [
 				'id' => $cityId,
-				'code' => 'A' . str_pad($iterator, 3, '0', STR_PAD_LEFT),
+				'code' => 'A' . str_pad($cityIterator, 3, '0', STR_PAD_LEFT),
 				'name' => $cityName,
 				'display_name' => $cityName,
 				'location_id' => $country,
@@ -42,6 +45,7 @@ class LocationSeeder extends Seeder
 				'updated_at' => $today
 			];
 
+			$cityIterator++;
 
 			foreach ($city->groupBy('site') as $siteName => $roads) {
 				$iterator++;
@@ -73,6 +77,16 @@ class LocationSeeder extends Seeder
 				}
 			}
 		}
+
+		$locations[] = [
+			'id' => null,
+			'code' => 'A999',
+			'name' => 'china',
+			'display_name' => '中國大陸',
+			'location_id' => null,
+			'created_at' => $today,
+			'updated_at' => $today
+		];
 
 		$chunksData = array_chunk($locations, 1000);
 		$total = count($chunksData);
