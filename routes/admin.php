@@ -70,7 +70,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
 
     //縣市
     Route::get('counties/index', ['as' => 'counties.index', 'uses' => 'CountiesController@index']); 
-    Route::post('counties/index', ['as' => 'counties.index', 'uses' => 'CountiesController@index']); 
+    Route::post('counties/index', ['as' => 'counties.datatable', 'uses' => 'CountiesController@index']); 
     Route::resource('counties', 'CountiesController', ['names' => ['update' => 'counties.edit', 'store' => 'counties.create']]);
 
     //鄉鎮區
