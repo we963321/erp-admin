@@ -47,7 +47,7 @@ class GetMenu
                 ->get();
         });
         foreach ($table as $v) {
-            if ($v->cid == 0 || \Gate::forUser(auth('admin')->user())->check($v->name) && Route::has($v->name)) {
+            if ($v->cid == 0 || \Gate::forUser(auth('admin')->user())->check($v->name) && Route::has('admin.' . $v->name)) {
                 if ($v->name == $urlPath) {
                     $openArr[] = $v->id;
                     $openArr[] = $v->cid;
