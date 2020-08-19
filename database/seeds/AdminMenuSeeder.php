@@ -33,11 +33,11 @@ VALUES
     (12, 'user.edit', '員工編輯', '', 1, '', "$date_created", "$date_updated"),
     (13, 'user.destroy', '員工刪除', '', 1, '', "$date_created", "$date_updated"),
 
-    (14, 'store', '分店管理', '', 0, 'fa-th', "$date_created", "$date_updated"),
-    (15, 'store.index', '分店列表', '', 14, '', "$date_created", "$date_updated"),
-    (16, 'store.create', '分店新增', '', 14, '', "$date_created", "$date_updated"),
-    (17, 'store.edit', '分店修改', '', 14, '', "$date_created", "$date_updated"),
-    (18, 'store.destroy', '分店刪除', '', 14, '', "$date_created", "$date_updated"),
+    (14, 'store', '店別管理', '', 0, 'fa-th', "$date_created", "$date_updated"),
+    (15, 'store.index', '店別列表', '', 14, '', "$date_created", "$date_updated"),
+    (16, 'store.create', '店別新增', '', 14, '', "$date_created", "$date_updated"),
+    (17, 'store.edit', '店別修改', '', 14, '', "$date_created", "$date_updated"),
+    (18, 'store.destroy', '店別刪除', '', 14, '', "$date_created", "$date_updated"),
 
     (19, 'customer', '客戶管理', '', 0, 'fa-slideshare', "$date_created", "$date_updated"),
     (20, 'customer.index', '客戶列表', '', 19, '', "$date_created", "$date_updated"),

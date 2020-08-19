@@ -31,10 +31,10 @@
                         <thead>
                         <tr>
                             <th data-sortable="false" class="hidden-sm">編號</th>
-                            <th class="hidden-sm">分店代碼</th>
-                            <th class="hidden-sm">分店簡稱</th>
-                            <th class="hidden-md">分店名稱</th>
-                            <th class="hidden-md">分店電話</th>
+                            <th class="hidden-sm">店別代碼</th>
+                            <th class="hidden-sm">店別簡稱</th>
+                            <th class="hidden-md">店別名稱</th>
+                            <th class="hidden-md">店別電話</th>
                             <th data-sortable="false">管理員</th>
                             <th data-sortable="false">操作</th>
                         </tr>

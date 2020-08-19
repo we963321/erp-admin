@@ -64,7 +64,7 @@
 </div>
 
 <div class="form-group">
-    <label class="col-md-3 control-label">管理員</label>
+    <label class="col-md-3 control-label">店別管理員</label>
     <div class="col-md-5">
         <select name="admin_user_id" autofocus>
             <option value="">請選擇 (名稱 / 員工編號 / 電話)</option>
