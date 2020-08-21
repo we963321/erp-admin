@@ -140,7 +140,7 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
 
     //車輛顏色
     Route::get('vehicle-color/index', ['as' => 'vehicle-color.index', 'uses' => 'VehicleColorController@index']); 
-    Route::post('vehicle-color/index', ['as' => 'vehicle-color.index', 'uses' => 'VehicleColorController@index']); 
+    Route::post('vehicle-color/index', ['as' => 'vehicle-color.datatable', 'uses' => 'VehicleColorController@index']); 
     Route::resource('vehicle-color', 'VehicleColorController', ['names' => ['update' => 'vehicle-color.edit', 'store' => 'vehicle-color.create']]);
 });
 
