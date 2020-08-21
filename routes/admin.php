@@ -59,88 +59,87 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::resource('user', 'UserController', ['names' => ['update' => 'user.edit', 'store' => 'user.create']]);
 
     //店別管理
-    Route::get('store/index', ['as' => 'store.index', 'uses' => 'StoreController@index']); 
-    Route::post('store/index', ['as' => 'store.index', 'uses' => 'StoreController@index']); 
+    Route::get('store/index', ['as' => 'store.index', 'uses' => 'StoreController@index']);
+    Route::post('store/index', ['as' => 'store.index', 'uses' => 'StoreController@index']);
     Route::resource('store', 'StoreController', ['names' => ['update' => 'store.edit', 'store' => 'store.create']]);
 
     //客戶管理
-    Route::get('customer/index', ['as' => 'customer.index', 'uses' => 'CustomerController@index']); 
-    Route::post('customer/index', ['as' => 'customer.index', 'uses' => 'CustomerController@index']); 
+    Route::get('customer/index', ['as' => 'customer.index', 'uses' => 'CustomerController@index']);
+    Route::post('customer/index', ['as' => 'customer.index', 'uses' => 'CustomerController@index']);
     Route::resource('customer', 'CustomerController', ['names' => ['update' => 'customer.edit', 'store' => 'customer.create']]);
 
     //縣市
-    Route::get('counties/index', ['as' => 'counties.index', 'uses' => 'CountiesController@index']); 
-    Route::post('counties/index', ['as' => 'counties.datatable', 'uses' => 'CountiesController@index']); 
+    Route::get('counties/index', ['as' => 'counties.index', 'uses' => 'CountiesController@index']);
+    Route::post('counties/index', ['as' => 'counties.datatable', 'uses' => 'CountiesController@index']);
     Route::resource('counties', 'CountiesController', ['names' => ['update' => 'counties.edit', 'store' => 'counties.create']]);
 
     //鄉鎮區
-    Route::get('town/index', ['as' => 'town.index', 'uses' => 'TownController@index']); 
-    Route::post('town/index', ['as' => 'town.index', 'uses' => 'TownController@index']); 
+    Route::get('town/index', ['as' => 'town.index', 'uses' => 'TownController@index']);
+    Route::post('town/index', ['as' => 'town.index', 'uses' => 'TownController@index']);
     Route::resource('town', 'TownController', ['names' => ['update' => 'town.edit', 'store' => 'town.create']]);
 
     //居住社區
-    Route::get('community/index', ['as' => 'community.index', 'uses' => 'CommunityController@index']); 
-    Route::post('community/index', ['as' => 'community.index', 'uses' => 'CommunityController@index']); 
+    Route::get('community/index', ['as' => 'community.index', 'uses' => 'CommunityController@index']);
+    Route::post('community/index', ['as' => 'community.index', 'uses' => 'CommunityController@index']);
     Route::resource('community', 'CommunityController', ['names' => ['update' => 'community.edit', 'store' => 'community.create']]);
 
     //會員種類
-    Route::get('customer-category/index', ['as' => 'customer-category.index', 'uses' => 'CustomerCategoryController@index']); 
-    Route::post('customer-category/index', ['as' => 'customer-category.index', 'uses' => 'CustomerCategoryController@index']); 
+    Route::get('customer-category/index', ['as' => 'customer-category.index', 'uses' => 'CustomerCategoryController@index']);
+    Route::post('customer-category/index', ['as' => 'customer-category.index', 'uses' => 'CustomerCategoryController@index']);
     Route::resource('customer-category', 'CustomerCategoryController', ['names' => ['update' => 'customer-category.edit', 'store' => 'customer-category.create']]);
 
     //專屬服務
-    Route::get('customer-service/index', ['as' => 'customer-service.index', 'uses' => 'CustomerServiceController@index']); 
-    Route::post('customer-service/index', ['as' => 'customer-service.index', 'uses' => 'CustomerServiceController@index']); 
+    Route::get('customer-service/index', ['as' => 'customer-service.index', 'uses' => 'CustomerServiceController@index']);
+    Route::post('customer-service/index', ['as' => 'customer-service.index', 'uses' => 'CustomerServiceController@index']);
     Route::resource('customer-service', 'CustomerServiceController', ['names' => ['update' => 'customer-service.edit', 'store' => 'customer-service.create']]);
 
     //專案資料
-    Route::get('customer-project/index', ['as' => 'customer-project.index', 'uses' => 'CustomerProjectController@index']); 
-    Route::post('customer-project/index', ['as' => 'customer-project.index', 'uses' => 'CustomerProjectController@index']); 
+    Route::get('customer-project/index', ['as' => 'customer-project.index', 'uses' => 'CustomerProjectController@index']);
+    Route::post('customer-project/index', ['as' => 'customer-project.index', 'uses' => 'CustomerProjectController@index']);
     Route::resource('customer-project', 'CustomerProjectController', ['names' => ['update' => 'customer-project.edit', 'store' => 'customer-project.create']]);
 
     //產品類別
-    Route::get('product-category/index', ['as' => 'product-category.index', 'uses' => 'ProductCategoryController@index']); 
-    Route::post('product-category/index', ['as' => 'product-category.index', 'uses' => 'ProductCategoryController@index']); 
+    Route::get('product-category/index', ['as' => 'product-category.index', 'uses' => 'ProductCategoryController@index']);
+    Route::post('product-category/index', ['as' => 'product-category.index', 'uses' => 'ProductCategoryController@index']);
     Route::resource('product-category', 'ProductCategoryController', ['names' => ['update' => 'product-category.edit', 'store' => 'product-category.create']]);
 
     //產品資料
-    Route::get('product/index', ['as' => 'product.index', 'uses' => 'ProductController@index']); 
-    Route::post('product/index', ['as' => 'product.index', 'uses' => 'ProductController@index']); 
+    Route::get('product/index', ['as' => 'product.index', 'uses' => 'ProductController@index']);
+    Route::post('product/index', ['as' => 'product.index', 'uses' => 'ProductController@index']);
     Route::resource('product', 'ProductController', ['names' => ['update' => 'product.edit', 'store' => 'product.create']]);
 
     //行業別
-    Route::get('industry/index', ['as' => 'industry.index', 'uses' => 'IndustryController@index']); 
-    Route::post('industry/index', ['as' => 'industry.index', 'uses' => 'IndustryController@index']); 
+    Route::get('industry/index', ['as' => 'industry.index', 'uses' => 'IndustryController@index']);
+    Route::post('industry/index', ['as' => 'industry.index', 'uses' => 'IndustryController@index']);
     Route::resource('industry', 'IndustryController', ['names' => ['update' => 'industry.edit', 'store' => 'industry.create']]);
 
     //休閒娛樂
-    Route::get('entertainment/index', ['as' => 'entertainment.index', 'uses' => 'EntertainmentController@index']); 
-    Route::post('entertainment/index', ['as' => 'entertainment.index', 'uses' => 'EntertainmentController@index']); 
+    Route::get('entertainment/index', ['as' => 'entertainment.index', 'uses' => 'EntertainmentController@index']);
+    Route::post('entertainment/index', ['as' => 'entertainment.index', 'uses' => 'EntertainmentController@index']);
     Route::resource('entertainment', 'EntertainmentController', ['names' => ['update' => 'entertainment.edit', 'store' => 'entertainment.create']]);
 
     //旅行模式
-    Route::get('tour/index', ['as' => 'tour.index', 'uses' => 'TourController@index']); 
-    Route::post('tour/index', ['as' => 'tour.index', 'uses' => 'TourController@index']); 
+    Route::get('tour/index', ['as' => 'tour.index', 'uses' => 'TourController@index']);
+    Route::post('tour/index', ['as' => 'tour.index', 'uses' => 'TourController@index']);
     Route::resource('tour', 'TourController', ['names' => ['update' => 'tour.edit', 'store' => 'tour.create']]);
 
     //收藏嗜好
-    Route::get('hobby/index', ['as' => 'hobby.index', 'uses' => 'HobbyController@index']); 
-    Route::post('hobby/index', ['as' => 'hobby.index', 'uses' => 'HobbyController@index']); 
+    Route::get('hobby/index', ['as' => 'hobby.index', 'uses' => 'HobbyController@index']);
+    Route::post('hobby/index', ['as' => 'hobby.index', 'uses' => 'HobbyController@index']);
     Route::resource('hobby', 'HobbyController', ['names' => ['update' => 'hobby.edit', 'store' => 'hobby.create']]);
 
     //車輛品牌
-    Route::get('vehicle-brand/index', ['as' => 'vehicle-brand.index', 'uses' => 'VehicleBrandController@index']); 
-    Route::post('vehicle-brand/index', ['as' => 'vehicle-brand.index', 'uses' => 'VehicleBrandController@index']); 
+    Route::get('vehicle-brand/index', ['as' => 'vehicle-brand.index', 'uses' => 'VehicleBrandController@index']);
+    Route::post('vehicle-brand/index', ['as' => 'vehicle-brand.index', 'uses' => 'VehicleBrandController@index']);
     Route::resource('vehicle-brand', 'VehicleBrandController', ['names' => ['update' => 'vehicle-brand.edit', 'store' => 'vehicle-brand.create']]);
 
     //品牌車系
-    Route::get('brand-series/index', ['as' => 'brand-series.index', 'uses' => 'BrandSeriesController@index']); 
-    Route::post('brand-series/index', ['as' => 'brand-series.index', 'uses' => 'BrandSeriesController@index']); 
-    Route::resource('brand-series', 'BrandSeriesController', ['names' => ['update' => 'brand-series.edit', 'store' => 'brand-series.create']]);
+    Route::get('brand-series/index', ['as' => 'brand-series.index', 'uses' => 'BrandSeriesController@index']);
+    Route::post('brand-series/index', ['as' => 'brand-series.datatable', 'uses' => 'BrandSeriesController@index']);
+    Route::resource('brand-series', 'BrandSeriesController');
 
     //車輛顏色
-    Route::get('vehicle-color/index', ['as' => 'vehicle-color.index', 'uses' => 'VehicleColorController@index']); 
-    Route::post('vehicle-color/index', ['as' => 'vehicle-color.datatable', 'uses' => 'VehicleColorController@index']); 
+    Route::get('vehicle-color/index', ['as' => 'vehicle-color.index', 'uses' => 'VehicleColorController@index']);
+    Route::post('vehicle-color/index', ['as' => 'vehicle-color.datatable', 'uses' => 'VehicleColorController@index']);
     Route::resource('vehicle-color', 'VehicleColorController', ['names' => ['update' => 'vehicle-color.edit', 'store' => 'vehicle-color.create']]);
 });
-

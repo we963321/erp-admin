@@ -149,6 +149,8 @@ return [
         'counties'              => '縣市',
         'town'                  => '鄉鎮區',
         'roles'                 => '角色',
+
+        'car_brand_id' => '車輛品牌',
     ],
 
 ];
