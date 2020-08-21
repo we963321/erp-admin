@@ -1,4 +1,3 @@
-
 <div class="form-group">
     <label class="col-md-3 control-label">*代碼</label>
     <div class="col-md-5">
