@@ -149,7 +149,7 @@
                                 },
                                 {   
                                     //狀態
-                                    'targets': 5, 
+                                    'targets': -4, 
                                     "render": function (data, type, row) {
                                         return renderStatus(row['status']);
                                     }
