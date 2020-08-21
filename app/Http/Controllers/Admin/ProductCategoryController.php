@@ -186,7 +186,7 @@ class ProductCategoryController extends Controller
                 ->withErrors("尚有專屬服務使用[".$used->name."]，刪除失敗");
         }
 
-        if ($tag && $tag->id != 1) {
+        if ($tag) {
             $tag->delete();
         } else {
             return redirect()->back()

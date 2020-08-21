@@ -8,14 +8,14 @@
                 <div class="">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">新增專案資料</h3>
+                            <h3 class="panel-title">新增{{$title}}</h3>
                         </div>
                         <div class="panel-body">
                             @include('admin.partials.errors')
                             @include('admin.partials.success')
-                            <form class="form-horizontal" role="form" method="POST" action="/{{env('ADMIN_PREFIX')}}/customer-project">
+                            <form class="form-horizontal" role="form" method="POST" action="/{{env('ADMIN_PREFIX')}}/{{$resourceName}}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                @include('admin.customer-project._form')
+                                @include('admin.' . $resourceName . '._form')
                                 <div class="form-group">
                                     <div class="col-md-7 col-md-offset-3">
                                         <button type="submit" class="btn btn-primary btn-md">

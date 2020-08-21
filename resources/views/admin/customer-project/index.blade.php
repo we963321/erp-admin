@@ -6,9 +6,9 @@
         <div class="col-md-6">
         </div>
         <div class="col-md-6 text-right">
-            @if(Gate::forUser(auth('admin')->user())->check('customer-project.create'))
-                <a href="/{{env('ADMIN_PREFIX')}}/customer-project/create" class="btn btn-success btn-md">
-                    <i class="fa fa-plus-circle"></i> 新增專案資料
+            @if(Gate::forUser(auth('admin')->user())->check($resourceName . '.create'))
+                <a href="/{{env('ADMIN_PREFIX')}}/{{$resourceName}}/create" class="btn btn-success btn-md">
+                    <i class="fa fa-plus-circle"></i> 新增{{$title}}
                 </a>
             @endif
         </div>
@@ -61,11 +61,11 @@
                 <div class="modal-body">
                     <p class="lead">
                         <i class="fa fa-question-circle fa-lg"></i>
-                        確認要刪除這個專案資料嗎?
+                        確認要刪除這個{{$title}}嗎?
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <form class="deleteForm" method="POST" action="/{{env('ADMIN_PREFIX')}}/customer-project">
+                    <form class="deleteForm" method="POST" action="/{{env('ADMIN_PREFIX')}}/{{$resourceName}}">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -109,7 +109,7 @@
                             order: [[0, "asc"]],
                             serverSide: true,
                             ajax: {
-                                url: '/{{env('ADMIN_PREFIX')}}/customer-project/index',
+                                url: '/{{env('ADMIN_PREFIX')}}/{{$resourceName}}/index',
                                 type: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -130,13 +130,13 @@
                                 {
                                     'targets': -1, 
                                     "render": function (data, type, row) {
-                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check('customer-project.edit') ? 1 : 0}};
-                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check('customer-project.destroy') ? 1 :0}};
+                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check($resourceName.'.edit') ? 1 : 0}};
+                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check($resourceName.'.destroy') ? 1 :0}};
                                         var str = '';
 
                                         //編輯
                                         if (row_edit) {
-                                            str += '<a style="margin:3px;" href="/{{env('ADMIN_PREFIX')}}/customer-project/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
+                                            str += '<a style="margin:3px;" href="/{{env('ADMIN_PREFIX')}}/{{$resourceName}}/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';
                                         }
 
                                         //刪除
@@ -173,7 +173,7 @@
 
                         $("table").delegate('.delBtn', 'click', function () {
                             var id = $(this).attr('attr');
-                            $('.deleteForm').attr('action', '/{{env('ADMIN_PREFIX')}}/customer-project/' + id);
+                            $('.deleteForm').attr('action', '/{{env('ADMIN_PREFIX')}}/{{$resourceName}}/' + id);
                             $("#modal-delete").modal();
                         });
 

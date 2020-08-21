@@ -29,6 +29,22 @@ class AuthenticateAdmin
 
         $routeName = Route::currentRouteName();
 
+        //不再使用admin前綴
+        $routeName = str_replace('admin.', '', $routeName);
+
+        //ㄋㄇㄉ
+        if($request->getMethod() != 'GET'){
+            if(strpos($routeName, 'datatable')){
+                $routeName = str_replace('datatable', 'index', $routeName);
+            }
+            if(strpos($routeName, 'store')){
+                $routeName = str_replace('store', 'create', $routeName);
+            }
+            if(strpos($routeName, 'update')){
+                $routeName = str_replace('update', 'edit', $routeName);
+            }
+        }
+
         if (!\Gate::forUser(auth('admin')->user())->check($routeName)) {
             if ($request->ajax() && ($request->getMethod() != 'GET')) {
                 return response()->json([

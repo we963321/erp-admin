@@ -184,7 +184,7 @@ class CustomerServiceController extends Controller
     {
         $tag = CustomerService::find((int)$id);
 
-        if ($tag && $tag->id != 1) {
+        if ($tag) {
             $tag->delete();
         } else {
             return redirect()->back()

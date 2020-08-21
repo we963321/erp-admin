@@ -14,6 +14,7 @@ class VehicleColorController extends Controller
         'code' => '',
         'name' => '',
         'description' => '',
+        'remark' => '',
         'status' => 1,
     ];
 

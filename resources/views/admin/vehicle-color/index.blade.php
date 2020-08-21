@@ -10,7 +10,7 @@ $resourceName = 'vehicle-color';
         <div class="col-md-6">
         </div>
         <div class="col-md-6 text-right">
-            @if(Gate::forUser(auth('admin')->user())->check('admin.' . $resourceName . '.create'))
+            @if(Gate::forUser(auth('admin')->user())->check($resourceName . '.create'))
                 <a href="{{ action($controllerName . '@create') }}" class="btn btn-success btn-md">
                     <i class="fa fa-plus-circle"></i> 新增車輛顏色
                 </a>
@@ -132,8 +132,8 @@ $resourceName = 'vehicle-color';
                                 {
                                     'targets': -1, 
                                     "render": function (data, type, row) {
-                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check('admin.' . $resourceName . '.edit') ? 1 : 0}};
-                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check('admin.' . $resourceName . '.destroy') ? 1 :0}};
+                                        var row_edit = {{Gate::forUser(auth('admin')->user())->check($resourceName . '.edit') ? 1 : 0}};
+                                        var row_delete = {{Gate::forUser(auth('admin')->user())->check($resourceName . '.destroy') ? 1 :0}};
                                         var str = '';
 
                                         //編輯

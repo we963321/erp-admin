@@ -95,8 +95,8 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
 
     //專案資料
     Route::get('customer-project/index', ['as' => 'customer-project.index', 'uses' => 'CustomerProjectController@index']);
-    Route::post('customer-project/index', ['as' => 'customer-project.index', 'uses' => 'CustomerProjectController@index']);
-    Route::resource('customer-project', 'CustomerProjectController', ['names' => ['update' => 'customer-project.edit', 'store' => 'customer-project.create']]);
+    Route::post('customer-project/index', ['as' => 'customer-project.datatable', 'uses' => 'CustomerProjectController@index']);
+    Route::resource('customer-project', 'CustomerProjectController');
 
     //產品類別
     Route::get('product-category/index', ['as' => 'product-category.index', 'uses' => 'ProductCategoryController@index']);

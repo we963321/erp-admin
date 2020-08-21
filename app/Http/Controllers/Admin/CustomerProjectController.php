@@ -12,6 +12,10 @@ use DB;
 
 class CustomerProjectController extends Controller
 {
+    protected $model;
+    protected $modelNamespace = '\App\Models\CustomerProject';
+    protected $resource = 'customer-project';
+    protected $title = '專案資料';
     protected $fields = [
         'code'                    => '',
         'name'                    => '',
@@ -72,6 +76,16 @@ class CustomerProjectController extends Controller
     ];
 
     /**
+     * Constuctor
+     */
+    public function __construct()
+    {
+        \View::share('resourceName', $this->resource);
+        \View::share('title', $this->title);
+        $this->model = new CustomerProject;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -86,15 +100,15 @@ class CustomerProjectController extends Controller
             $order = $request->get('order');
             $columns = $request->get('columns');
             $search = $request->get('search');
-            $data['recordsTotal'] = CustomerProject::count();
+            $data['recordsTotal'] = $this->model::count();
             if (strlen($search['value']) > 0) {
 
-                $data['recordsFiltered'] = CustomerProject::where(function ($query) use ($search) {
+                $data['recordsFiltered'] = $this->model::where(function ($query) use ($search) {
                     $query->where('name', 'LIKE', '%' . $search['value'] . '%')
                         ->orWhere('code', 'like', '%' . $search['value'] . '%');
                 })->count();
 
-                $data['data'] = CustomerProject::where(function ($query) use ($search) {
+                $data['data'] = $this->model::where(function ($query) use ($search) {
                     $query->where('name', 'LIKE', '%' . $search['value'] . '%')
                         ->orWhere('code', 'like', '%' . $search['value'] . '%');
                 })->skip($start)->take($length)
@@ -102,8 +116,8 @@ class CustomerProjectController extends Controller
                     ->get()->toArray();
 
             } else {
-                $data['recordsFiltered'] = CustomerProject::count();
-                $data['data'] = CustomerProject::skip($start)->take($length)
+                $data['recordsFiltered'] = $this->model::count();
+                $data['data'] = $this->model::skip($start)->take($length)
                     ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                     ->get()->toArray();
             }
@@ -111,7 +125,7 @@ class CustomerProjectController extends Controller
             return response()->json($data);
         }
 
-        return view('admin.customer-project.index');
+        return view('admin.'.$this->resource.'.index');
     }
 
     /**
@@ -128,7 +142,7 @@ class CustomerProjectController extends Controller
 
         $data['productAll'] = Product::where('status', '1')->get()->toArray();
 
-        return view('admin.customer-project.create', $data);
+        return view('admin.'.$this->resource.'.create', $data);
     }
 
     /**
@@ -137,28 +151,37 @@ class CustomerProjectController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Requests\CustomerProjectCreateRequest $request)
+    public function store(Request $request)
     {  
-        $customer_project = new CustomerProject();
+        $data = $this->valid($request, [
+            'code'         => 'required|unique:customer_project|max:4',
+            'name'         => 'required|max:40',
+            'status'       => 'required|in:-1,0,1',
+            'description'  => 'max:400',
+            'feature'      => 'max:200',
+            'target'       => 'required',
+        ]);
+
+        $model = $this->model;
 
         try{
             DB::beginTransaction();
 
             foreach (array_keys($this->fields) as $field) {
-                $customer_project->$field = $request->get($field);
+                $model->$field = $request->get($field);
             }
 
-            $customer_project->save();
+            $model->save();
 
-            event(new \App\Events\userActionEvent('\App\Models\CustomerProject', $customer_project->id, 1, auth('admin')->user()->username . '新增了專案資料：' . $customer_project->name));
+            event(new \App\Events\userActionEvent($this->modelNamespace, $model->id, 1, auth('admin')->user()->username . '新增了'.$this->title.'：' . $model->name));
 
             DB::commit();
         }catch(\PDOException $e){
             DB::rollBack();
-            return redirect('/'.env('ADMIN_PREFIX').'/customer-project')->withErrors($e->getMessage());
+            return redirect('/'.env('ADMIN_PREFIX').'/'.$this->resource.'')->withErrors($e->getMessage());
         }
 
-        return redirect('/'.env('ADMIN_PREFIX').'/customer-project')->withSuccess('新增成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/'.$this->resource.'')->withSuccess('新增成功！');
     }
 
     /**
@@ -180,17 +203,17 @@ class CustomerProjectController extends Controller
      */
     public function edit($id)
     {
-        $customer_project = CustomerProject::find((int)$id);
-        if (!$customer_project) return redirect('/'.env('ADMIN_PREFIX').'/customer-project')->withErrors("找不到該專案資料!");
+        $model = $this->model::find((int)$id);
+        if (!$model) return redirect('/'.env('ADMIN_PREFIX').'/'.$this->resource.'')->withErrors("找不到該'.$this->title.'!");
 
         foreach (array_keys($this->fields) as $field) {
-            $data[$field] = old($field, $customer_project->$field);
+            $data[$field] = old($field, $model->$field);
         }
 
         $data['productAll'] = Product::where('status', '1')->get()->toArray();
         $data['id'] = (int)$id;
         
-        return view('admin.customer-project.edit', $data);
+        return view('admin.'.$this->resource.'.edit', $data);
     }
 
     /**
@@ -200,29 +223,38 @@ class CustomerProjectController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Requests\CustomerProjectUpdateRequest $request, $id)
-    {
-        $customer_project = CustomerProject::find((int)$id);
+    public function update(Request $request, $id)
+    {   
+        $data = $this->valid($request, [
+            'code'         => 'required|unique:customer_project,code,' . $id . '|max:4',
+            'name'         => 'required|max:40',
+            'status'       => 'required|in:-1,0,1',
+            'description'  => 'max:400',
+            'feature'      => 'max:200',
+            'target'       => 'required',
+        ]);
+
+        $model = $this->model::find((int)$id);
 
         foreach (array_keys($this->fields) as $field) {
-            $customer_project->$field = $request->get($field);
+            $model->$field = $request->get($field);
         }
 
         try{
             DB::beginTransaction();
 
-            $customer_project->save();
+            $model->save();
 
-            event(new \App\Events\userActionEvent('\App\Models\CustomerProject', $customer_project->id, 3, auth('admin')->user()->username . '編輯了專案資料：' . $customer_project->name));
+            event(new \App\Events\userActionEvent($this->modelNamespace, $model->id, 3, auth('admin')->user()->username . '編輯了'.$this->title.'：' . $model->name));
 
             DB::commit();
         }catch(\PDOException $e){
             DB::rollBack();
-            return redirect('/'.env('ADMIN_PREFIX').'/customer-project')->withErrors($e->getMessage());
+            return redirect('/'.env('ADMIN_PREFIX').'/'.$this->resource.'')->withErrors($e->getMessage());
         }
 
 
-        return redirect('/'.env('ADMIN_PREFIX').'/customer-project')->withSuccess('修改成功！');
+        return redirect('/'.env('ADMIN_PREFIX').'/'.$this->resource.'')->withSuccess('修改成功！');
     }
 
     /**
@@ -233,16 +265,16 @@ class CustomerProjectController extends Controller
      */
     public function destroy($id)
     {
-        $tag = CustomerProject::find((int)$id);
+        $model = $this->model::find((int)$id);
 
-        if ($tag && $tag->id != 1) {
-            $tag->delete();
+        if ($model) {
+            $model->delete();
         } else {
             return redirect()->back()
                 ->withErrors("刪除失敗");
         }
 
-        event(new \App\Events\userActionEvent('\App\Models\CustomerProject', $tag->id, 2, auth('admin')->user()->username . "刪除了專案資料：" . $tag->name . "(" . $tag->id . ")"));
+        event(new \App\Events\userActionEvent($this->modelNamespace, $model->id, 2, auth('admin')->user()->username . "刪除了'.$this->title.'：" . $model->name . "(" . $model->id . ")"));
 
         return redirect()->back()
             ->withSuccess("刪除成功");

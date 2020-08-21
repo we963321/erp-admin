@@ -46,7 +46,7 @@
                     <div class="error-content" style="padding-top: 30px">
                         <h3><i class="fa fa-warning text-yellow"></i>  頁面找不到</h3>
                         <p>
-                            此時你可以返回 <a href="{{route('index')}}"> 首頁 </a>.
+                            此時你可以返回 <a href="{{route('admin.index')}}"> 首頁 </a>.
                         </p>
                     </div>
                 </div>

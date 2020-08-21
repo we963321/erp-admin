@@ -1,4 +1,3 @@
-
 <div class="form-group">
     <label class="col-md-3 control-label">*代碼</label>
     <div class="col-md-5">
@@ -14,9 +13,16 @@
 </div>
 
 <div class="form-group">
-    <label class="col-md-3 control-label">描述</label>
+    <label class="col-md-3 control-label">說明</label>
     <div class="col-md-5">
         <textarea class="form-control" name="description">{{ $description }}</textarea>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-3 control-label">備註</label>
+    <div class="col-md-5">
+        <textarea class="form-control" name="remark">{{ $remark }}</textarea>
     </div>
 </div>
 

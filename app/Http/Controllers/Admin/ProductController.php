@@ -200,7 +200,7 @@ class ProductController extends Controller
     {
         $tag = Product::find((int)$id);
 
-        if ($tag && $tag->id != 1) {
+        if ($tag) {
             $tag->delete();
         } else {
             return redirect()->back()

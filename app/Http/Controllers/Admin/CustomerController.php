@@ -234,7 +234,7 @@ class CustomerController extends Controller
             $tag->stores()->detach($v);
         }
 
-        if ($tag && $tag->id != 1) {
+        if ($tag) {
             $tag->delete();
         } else {
             return redirect()->back()
