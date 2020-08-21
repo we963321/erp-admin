@@ -46,7 +46,7 @@
                         @if(isset($permissionAll[$v['id']]))
 
                             @foreach($permissionAll[$v['id']] as $vv)
-                                <div class="col-md-4" style="float:left;padding-left:20px;margin-top:8px;">
+                                <div class="col-md-3" style="float:left;padding-left:20px;margin-top:8px;">
                         <span class="checkbox-custom checkbox-default">
                         <i class="fa"></i>
                             <input class="form-actions"
