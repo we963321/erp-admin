@@ -142,4 +142,15 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     Route::get('vehicle-color/index', ['as' => 'vehicle-color.index', 'uses' => 'VehicleColorController@index']);
     Route::post('vehicle-color/index', ['as' => 'vehicle-color.datatable', 'uses' => 'VehicleColorController@index']);
     Route::resource('vehicle-color', 'VehicleColorController', ['names' => ['update' => 'vehicle-color.edit', 'store' => 'vehicle-color.create']]);
+
+    /**
+     * Admin Route resources
+     */
+    $resources = [];
+
+    foreach ($resources as $name => $controllerName) {
+        Route::get($name . '/index', ['as' => $name . '.index', 'uses' => $controllerName . '@index']);
+        Route::post($name . '/index', ['as' => $name . '.datatable', 'uses' => $controllerName .  '@index']);
+        Route::resource($name, $controllerName);
+    }
 });
