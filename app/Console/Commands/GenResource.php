@@ -47,7 +47,7 @@ class GenResource extends Command
         $this->info('Start to create controller.');
         \Artisan::call("make:controller Admin\\\\{$camelResource}Controller");
         $this->info('Start to create model.');
-        \Artisan::call("make:model Model\\\\{$singularResource}");
+        \Artisan::call("make:model Models\\\\{$singularResource}");
         $this->info('Start to create migration.');
         \Artisan::call("make:migration create_{$snakeResouceWithLowDash}_table --table");
         $this->info('Start to create crud views.');
