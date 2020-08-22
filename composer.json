@@ -18,7 +18,9 @@
 		"mockery/mockery": "0.9.*",
 		"phpunit/phpunit": "~7.0",
 		"symfony/css-selector": "3.1.*",
-		"symfony/dom-crawler": "3.1.*"
+		"symfony/dom-crawler": "3.1.*",
+		"sven/artisan-view": "^3.3",
+		"barryvdh/laravel-ide-helper": "^2.8"
 	},
 	"autoload": {
 		"classmap": [
@@ -41,10 +43,14 @@
 			"php artisan key:generate"
 		],
 		"post-install-cmd": [
-			"Illuminate\\Foundation\\ComposerScripts::postInstall"
+			"Illuminate\\Foundation\\ComposerScripts::postInstall",
+			"@php artisan ide-helper:generate",
+			"@php artisan ide-helper:meta"
 		],
 		"post-update-cmd": [
-			"Illuminate\\Foundation\\ComposerScripts::postUpdate"
+			"Illuminate\\Foundation\\ComposerScripts::postUpdate",
+			"@php artisan ide-helper:generate",
+			"@php artisan ide-helper:meta"
 		],
 		"admin-mseed": [
 			"php artisan db:seed --class=\"AdminMenuSeeder\"",
