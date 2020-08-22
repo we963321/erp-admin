@@ -38,7 +38,7 @@ return [
         'attributes' => [
             'prefix'     => 'admin/log-viewer',
 
-            'middleware' => ['admin','auth:admin','menu'],
+            'middleware' => ['admin', 'auth:admin', 'menu'],
         ],
     ],
 
@@ -75,6 +75,8 @@ return [
         'icons-enabled' => true,
     ],
 
+    'theme'         => 'theme-admin',
+    
     /* ------------------------------------------------------------------------------------------------
      |  Icons
      | ------------------------------------------------------------------------------------------------
