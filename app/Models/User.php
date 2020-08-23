@@ -48,7 +48,7 @@ class User extends Authenticatable
     }
 
     /**
-     *  Regular_appear_at_time column separate by commas
+     *  Setter for regular_appear_at_time column separate by commas
      */
     public function setRegularAppearAtTimeAttribute($value)
     {
@@ -56,11 +56,27 @@ class User extends Authenticatable
     }
 
     /**
-     *  Regular_appear_at column separate by commas
+     *  Setter for regular_appear_at column separate by commas seeter
      */
     public function setRegularAppearAtAttribute($value)
     {
         $this->attributes['regular_appear_at'] = implode(',', $value);
+    }
+
+    /**
+     *  Getter for regular_appear_at_time column separate by commas
+     */
+    public function getRegularAppearAtTimeAttribute($value)
+    {
+        return explode(',', $value);
+    }
+
+    /**
+     *  Getter for regular_appear_at column separate by commas
+     */
+    public function getRegularAppearAtAttribute($value)
+    {
+        return explode(',', $value);
     }
 
     /**

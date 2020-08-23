@@ -3,7 +3,7 @@
     <div class="col-md-5">
         <div class="radio">
             <label>
-              <input type="radio" name="_holiday_choice" checked>
+              <input class="hobby-normal-date" type="radio" name="_holiday_choice" checked>
               平日
             </label>
           </div>
@@ -17,7 +17,7 @@
         
         <div class="radio">
             <label>
-              <input type="radio" name="_holiday_choice">
+              <input class="hobby-holiday-date" type="radio" name="_holiday_choice">
               假日
             </label>
         </div>
@@ -25,7 +25,7 @@
         <div class="regular-holiday-day">
             @for ($i = 6; $i <= 7; $i++)
                 <label class="checkbox-inline">
-                    <input type="checkbox" name="regular_appear_at[]" value="{{ $i }}"> 星期{{ $i === 6 ? ' 6' : '天' }}
+                    <input type="checkbox" name="regular_appear_at[]" value="{{ $i }}" disabled> 星期{{ $i === 6 ? ' 6' : '天' }}
                 </label>
             @endfor
         </div>
@@ -35,7 +35,7 @@
 <div class="form-group">
     <label class="col-md-3 control-label">洗車習慣時段</label>
     <div class="col-md-5">
-        <div class="regular-holiday-day">
+        <div class="regular-time">
             @php
                 $_times = ['0900-1200' => '早上(0900-1200)','1300-1800' => '下午(1300-1800)', '1800-2200' => '晚上(1800-2200)'];
             @endphp
@@ -51,7 +51,7 @@
 <div class="form-group">
     <label class="col-md-3 control-label">預約通知</label>
     <div class="col-md-5">
-        <div>
+        <div class="reservation-notification">
             @php
                 $_times = ['7' => '7日', '10' => '10日', '15' => '15日', '30'=> '30日', '45'=> '45日', '60'=> '60日'];
             @endphp
@@ -67,7 +67,7 @@
 <div class="form-group">
     <label class="col-md-3 control-label">家中車輛數</label>
     <div class="col-md-5">
-        <input type="number" class="form-control" name="car_amount" value="{{ $tax_number ?? 0}}">
+        <input type="number" class="form-control" name="car_amount" value="{{ $customer->car_amount ?? 0}}">
     </div>
 </div>
 
@@ -90,6 +90,7 @@
     </div>
 </div>
 
+{{-- main --}}
 <script>
 $(document).ready(function() {
     var frame = $('#cars_list_frame');
@@ -219,5 +220,67 @@ $(document).ready(function() {
         });
     }
     
+});
+</script>
+
+{{-- customer column controll --}}
+
+<script>
+$(document).ready(function() {
+    var selectInputsHoliday = $('[name=_holiday_choice]');
+    var regularAppearAt = {!! collect($customer->regular_appear_at)->toJson() !!};
+    var regularAppearAtTime = {!! collect($customer->regular_appear_at_time)->toJson() !!};
+    var reservationDate = '{{ $customer->reservation_notify_date }}';
+
+    selectInputsHoliday.on('change', function(e) {
+        var self = $(this);
+        $('.regular-normal-day, .regular-holiday-day').find('[type=checkbox]').prop('checked', false);
+        if (self.hasClass('hobby-normal-date')) {
+            $('.regular-holiday-day')
+                .find('[type=checkbox]')
+                .prop('checked', false)
+                .prop('disabled', true);
+                
+            $('.regular-normal-day')
+                .find('[type=checkbox]')
+                .prop('disabled', false);
+
+        } else if (self.hasClass('hobby-holiday-date')) {
+            $('.regular-normal-day')
+                .find('[type=checkbox]')
+                .prop('checked', false)
+                .prop('disabled', true);
+
+            $('.regular-holiday-day')
+                .find('[type=checkbox]')
+                .prop('disabled', false);
+        }
+        
+    });
+
+    if (regularAppearAt.includes('6') || regularAppearAt.includes('7')) {
+        $('.hobby-holiday-date').prop('checked', true);
+        selectInputsHoliday.change()
+        
+        $('.regular-holiday-day').find('[type=checkbox]').each(function(_i, ele) {
+            var checkbox = $(ele);
+            regularAppearAt.includes(checkbox.val()) && checkbox.prop('checked', true);
+        })
+    } else {
+        $('.regular-normal-day').find('[type=checkbox]').each(function(_i, ele) {
+            var checkbox = $(ele);
+            regularAppearAt.includes(checkbox.val()) && checkbox.prop('checked', true);
+        });
+    }
+
+    $('.regular-time').find('[type=checkbox]').each(function(_i, ele) {
+        var checkbox = $(ele);
+        regularAppearAtTime.includes(checkbox.val()) && checkbox.prop('checked', true);
+    });
+
+    $('.reservation-notification').find('[type=radio]').each(function(_i, ele) {
+        var radio = $(ele);
+        reservationDate === radio.val() && radio.prop('checked', true);
+    });
 });
 </script>
