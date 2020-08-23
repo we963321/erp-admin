@@ -96,9 +96,10 @@ $(document).ready(function() {
     var template = $('.car-component-template').html();
     var cars = {!! $customer->cars->toJson() !!};
     var deleteCars = [];
+    var deleteModal = $("#modal-delete");
     var carBrands = {!! $brands->toJson() !!};
     var carColor = {!! $carColor->toJson() !!};
-
+    
     var createCarButton = $('.create-car');    
 
     createCarButton.on('click', function() {
@@ -106,6 +107,9 @@ $(document).ready(function() {
         renderList();
     });
 
+    /**
+     * Brand select chagne handle
+     */
     frame.on('change', '.car_brand_selector', function(e) {
         var self = $(this);
         var seriesSelector = self.parents('.panel-body').find('.series-selector'); 
@@ -121,6 +125,9 @@ $(document).ready(function() {
 
     });
 
+    /**
+     * Customer name handle
+     */
     frame.on('change', '.customer-name-setter', function() {
         var self = $(this);
         var customerInput = self.parents('.panel-body').find('.customer_name'); 
@@ -129,6 +136,25 @@ $(document).ready(function() {
             customerInput.val('{{ $customer->name }}');
         }
     });
+
+    /**
+     * Delete the car data action handle
+     */
+     frame.on('click', '.car-delete-action', function(e) {
+        var self = $(this);
+        
+        deleteModal.attr('data-index', self.attr('data-index'));
+        deleteModal.modal();
+     });
+
+    /**
+     * Confirm delete action
+     */
+    deleteModal.on('click', '.confirm-button', function(e) {
+        removeCar(deleteModal.attr('data-index'));
+        renderList();
+        deleteModal.modal('hide');
+    })
     
     /**
      * Inintailization
@@ -184,8 +210,13 @@ $(document).ready(function() {
     }
 
     /** remove car form list */
-    function removeCar() {
+    function removeCar(index) {
+        var removeCar = cars.splice(index, 1)[0];
+        removeCar.id && deleteCars.push(removeCar.id) && $('.delete-area').html('');
 
+        deleteCars.forEach(function(removeCarElem)  {
+            $('.delete-area').append('<input type="hidden" value="' + removeCarElem + '" name="delete_cars[]">')
+        });
     }
     
 });

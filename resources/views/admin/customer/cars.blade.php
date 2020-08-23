@@ -39,4 +39,31 @@
         </div>
     </div>
     
+    <div class="modal fade" id="modal-delete" tabIndex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        ×
+                    </button>
+                    <h4 class="modal-title">提示</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="lead">
+                        <i class="fa fa-question-circle fa-lg"></i>
+                        確認要刪除這個車輛嗎?
+                    </p>
+                    <p class="text-muted">確認之後需案下儲存才會進行刪除。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger confirm-button">
+                        <i class="fa fa-times-circle"></i> 確認
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 @stop

@@ -302,6 +302,8 @@ class CustomerController extends Controller
 
         $cars = $carData['cars'] ?? [];
 
+        $deleteCars = $carData['delete_cars'] ?? [];
+
         DB::beginTransaction();
 
         try {
@@ -316,6 +318,9 @@ class CustomerController extends Controller
                 $carModel->fill($car);
                 $carModel->save();
             }
+
+            !empty($deleteCars) and CustomerCar::whereIn('id', $deleteCars)->update(['customer_id' => null]);
+
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollback();

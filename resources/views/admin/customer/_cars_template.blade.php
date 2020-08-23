@@ -10,7 +10,7 @@
                     __panel_head__
                 </a>
 
-                <span class="pull-right text-danger" data-index="_car_index_">刪除</span>
+                <span class="pull-right text-danger car-delete-action" data-index="_car_index_" style="cursor: pointer;">刪除</span>
             </h4>
         </div>
         <div id="__panel_id__" class="panel-collapse collapse" role="tabpanel" aria-labelledby="__panel_head_id__">
