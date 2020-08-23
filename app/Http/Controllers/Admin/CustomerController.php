@@ -293,6 +293,9 @@ class CustomerController extends Controller
             'cars.*.model' => 'nullable|string',
             'cars.*.displacement' => 'nullable|string',
             'cars.*.log_surface' => 'nullable|string',
+            'cars.*.inspected_at' => 'nullable|date',
+            'cars.*.ci_expired_at' => 'nullable|date',
+            'cars.*.insurance_expired_at' => 'nullable|date',
             'delete_cars' => 'nullable|array',
             'delete_cars.*' => 'integer',
         ]);

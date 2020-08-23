@@ -122,11 +122,27 @@
                         <textarea class="form-control" name="cars[_car_index_][log_surface]" value=""></textarea>
                     </div>
                 </div>   
-                    {{-- inspected_at --}}
-                    {{-- ci_expired_at --}}
-                    {{-- insurance_expired_at --}}
-                
 
+                <div class="form-group">
+                    <label class="col-md-3 control-label">驗車到期日</label>
+                    <div class="col-md-5">
+                        <input type="date" class="form-control" name="cars[_car_index_][inspected_at]">
+                    </div>
+                </div>   
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">強制險到期日</label>
+                    <div class="col-md-5">
+                        <input type="date" class="form-control" name="cars[_car_index_][ci_expired_at]">
+                    </div>
+                </div>   
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">車險到期日</label>
+                    <div class="col-md-5">
+                        <input type="date" class="form-control" name="cars[_car_index_][insurance_expired_at]">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
