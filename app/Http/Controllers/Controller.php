@@ -22,6 +22,10 @@ class Controller extends BaseController
     {
         $this->validate($request, $rule);
 
-        return $request->only(array_keys($rule));
+        $params = array_filter(array_keys($rule), function ($ruleKey) {
+            return !is_numeric(strpos($ruleKey, '.'));
+        });
+
+        return $request->only($params);
     }
 }
