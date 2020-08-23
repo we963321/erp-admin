@@ -132,6 +132,11 @@
                                         var row_delete = {{Gate::forUser(auth('admin')->user())->check('customer.destroy') ? 1 :0}};
                                         var str = '';
 
+                                        //車輛資料
+                                        if (row_edit) {
+                                            str += '<a style="margin:3px;" href="{{ route('admin.customer.cars', ['id'=> '__id']) }}" class="X-Small btn-xs text-info"><i class="fa fa-car"></i> 車輛資料</a>'.replace('__id', row['id']);
+                                        }
+
                                         //編輯
                                         if (row_edit) {
                                             str += '<a style="margin:3px;" href="/{{env('ADMIN_PREFIX')}}/customer/' + row['id'] + '/edit" class="X-Small btn-xs text-success "><i class="fa fa-edit"></i> 編輯</a>';

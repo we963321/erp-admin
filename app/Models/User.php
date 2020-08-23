@@ -10,12 +10,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -25,6 +20,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $with = ['cars'];
 
     //用戶店別
     public function stores()
@@ -48,5 +45,31 @@ class User extends Authenticatable
         }
 
         return true;
+    }
+
+    /**
+     *  Regular_appear_at_time column separate by commas
+     */
+    public function setRegularAppearAtTimeAttribute($value)
+    {
+        $this->attributes['regular_appear_at_time'] = implode(',', $value);
+    }
+
+    /**
+     *  Regular_appear_at column separate by commas
+     */
+    public function setRegularAppearAtAttribute($value)
+    {
+        $this->attributes['regular_appear_at'] = implode(',', $value);
+    }
+
+    /**
+     * cars relation ship
+     *
+     * @return void
+     */
+    public function cars()
+    {
+        return $this->hasMany(CustomerCar::class, 'customer_id');
     }
 }

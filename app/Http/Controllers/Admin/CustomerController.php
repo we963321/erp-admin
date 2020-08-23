@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Models\Admin\AdminUser;
 use App\Models\Admin\Store;
+use App\Models\CarBrand;
+use App\Models\CarColor;
+use App\Models\CustomerCar;
+
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -62,7 +66,6 @@ class CustomerController extends Controller
                 })->skip($start)->take($length)
                     ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
                     ->get()->toArray();
-
             } else {
                 $data['recordsFiltered'] = User::count();
                 $data['data'] = User::with(['stores'])->skip($start)->take($length)
@@ -100,10 +103,10 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Requests\UserCreateRequest $request)
-    {  
+    {
         $user = new User();
 
-        try{
+        try {
             DB::beginTransaction();
 
             foreach (array_keys($this->fields) as $field) {
@@ -119,10 +122,10 @@ class CustomerController extends Controller
             //自產客戶編號
             $zero_num = 7 - strlen($user->id);
             $prefix = '';
-            for($i = 0; $i <= $zero_num; $i++){
+            for ($i = 0; $i <= $zero_num; $i++) {
                 $prefix .= '0';
             }
-            $user->cust_id = 'a'.date('Ym').$prefix.$user->id;
+            $user->cust_id = 'a' . date('Ym') . $prefix . $user->id;
             $user->save();
 
             if (is_array($request->get('stores'))) {
@@ -132,12 +135,12 @@ class CustomerController extends Controller
             event(new \App\Events\userActionEvent('\App\Models\User', $user->id, 1, auth('admin')->user()->username . '新增了客戶：' . $user->name));
 
             DB::commit();
-        }catch(\PDOException $e){
+        } catch (\PDOException $e) {
             DB::rollBack();
-            return redirect('/'.env('ADMIN_PREFIX').'/customer')->withErrors($e->getMessage());
+            return redirect('/' . env('ADMIN_PREFIX') . '/customer')->withErrors($e->getMessage());
         }
 
-        return redirect('/'.env('ADMIN_PREFIX').'/customer')->withSuccess('新增成功！');
+        return redirect('/' . env('ADMIN_PREFIX') . '/customer')->withSuccess('新增成功！');
     }
 
     /**
@@ -160,7 +163,7 @@ class CustomerController extends Controller
     public function edit($id)
     {
         $user = User::find((int)$id);
-        if (!$user) return redirect('/'.env('ADMIN_PREFIX').'/customer')->withErrors("找不到該客戶!");
+        if (!$user) return redirect('/' . env('ADMIN_PREFIX') . '/customer')->withErrors("找不到該客戶!");
 
         $stores = [];
         if ($user->stores) {
@@ -175,7 +178,7 @@ class CustomerController extends Controller
         }
         $data['storesAll'] = Store::all()->toArray();
         $data['id'] = (int)$id;
-        
+
         return view('admin.customer.edit', $data);
     }
 
@@ -201,7 +204,7 @@ class CustomerController extends Controller
             $user->password = bcrypt($request->get('password'));
         }
 
-        try{
+        try {
             DB::beginTransaction();
 
             $user->save();
@@ -211,13 +214,13 @@ class CustomerController extends Controller
             event(new \App\Events\userActionEvent('\App\Models\User', $user->id, 3, auth('admin')->user()->username . '編輯了客戶：' . $user->name));
 
             DB::commit();
-        }catch(\PDOException $e){
+        } catch (\PDOException $e) {
             DB::rollBack();
-            return redirect('/'.env('ADMIN_PREFIX').'/customer')->withErrors($e->getMessage());
+            return redirect('/' . env('ADMIN_PREFIX') . '/customer')->withErrors($e->getMessage());
         }
 
 
-        return redirect('/'.env('ADMIN_PREFIX').'/customer')->withSuccess('修改成功！');
+        return redirect('/' . env('ADMIN_PREFIX') . '/customer')->withSuccess('修改成功！');
     }
 
     /**
@@ -245,5 +248,82 @@ class CustomerController extends Controller
 
         return redirect()->back()
             ->withSuccess("刪除成功");
+    }
+
+    /**
+     * Cars edit page
+     */
+    public function cars(Request $request, $id)
+    {
+        $customer = User::find((int)$id);
+        if (!$customer) return redirect(route('admin.customer.index'))->withErrors("找不到該客戶!");
+
+        $data = [
+            'customer' => $customer,
+            'brands' => CarBrand::with('series')->get(),
+            'carColor' => CarColor::all()
+        ];
+
+        return view('admin.customer.cars', $data);
+    }
+
+    public function carsUpdate(Request $request, $id)
+    {
+        $customer = User::find((int)$id);
+        if (!$customer) return redirect(route('admin.customer.index'))->withErrors("找不到該客戶!");
+
+        $data = $this->valid($request, [
+            'regular_appear_at_time' => 'nullable|array',
+            'regular_appear_at' => 'nullable|array',
+            'reservation_notify_date' => 'required|numeric',
+            'car_amount' => 'nullable|numeric',
+        ]);
+
+        $carData = $this->valid($request, [
+            'cars' => 'nullable|array',
+            'cars.*.id' => 'nullable|exists:customer_cars,id',
+            'cars.*.number' => 'required|string',
+            'cars.*.customer_name' => 'required|string',
+            'cars.*.bought_type' => 'nullable|in:1,2,3',
+            'cars.*.years' => 'nullable',
+            'cars.*.series_id' => 'nullable|exists:car_series,id',
+            'cars.*.type' => 'nullable|in:1,2,3,4,5,6,7,8',
+            'cars.*.color_id' => 'nullable|exists:car_colors,id',
+            'cars.*.color_remark' => 'nullable|string',
+            'cars.*.model' => 'nullable|string',
+            'cars.*.displacement' => 'nullable|string',
+            'cars.*.log_surface' => 'nullable|string',
+            'delete_cars' => 'nullable|array',
+            'delete_cars.*' => 'integer',
+        ]);
+
+        $customer->fill($data);
+        $customer->save();
+
+        $cars = $carData['cars'] ?? [];
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($cars as $car) {
+                $car['customer_id'] = $customer->id;
+
+                $carModel = new CustomerCar;
+                @$car['id'] && $carModel = CustomerCar::find($car['id']) ?? $carModel;
+
+                unset($car['id']);
+
+                $carModel->fill($car);
+                $carModel->save();
+            }
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollback();
+        }
+
+        event(new \App\Events\userActionEvent('\App\Models\User', $customer->id, 2, auth('admin')->user()->username . "修改了客戶車輛資料：" . $customer->name . "(" . $customer->id . ")"));
+
+
+        return redirect(route('admin.customer.cars', [$id]))->withSuccess('修改成功');
     }
 }
