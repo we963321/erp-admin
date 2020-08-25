@@ -178,7 +178,7 @@ $(document).ready(function() {
             return category.id === +self.val();
         });
 
-        categorySelected.customer_service && categorySelected.customer_service.forEach(function(item) {
+        categorySelected && categorySelected.customer_service && categorySelected.customer_service.forEach(function(item) {
             serviceSelector.append('<option value="' + item.id + '">' + item.name + '</option>');
         });
     });
@@ -201,7 +201,7 @@ $(document).ready(function() {
         const index = self.closest('.panel-info').attr('data-index');
 
         //假如選擇的專案對象是車子，要生下拉選單
-        if(projectSelected.target == 1){
+        if(projectSelected && projectSelected.target == 1){
             let carsSelector = $(`<select name=project[${index}][car_id]></select>`);
             cars.forEach(function(item) {
                 carsSelector.append('<option value="' + item.id + '">' + item.number + '</option>');
