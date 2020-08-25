@@ -45,10 +45,15 @@ VALUES
     (22, 'customer.edit', '客戶修改', '', 19, '', "$date_created", "$date_updated"),
     (23, 'customer.destroy', '客戶刪除', '', 19, '', "$date_created", "$date_updated"),
 
-    (20, 'customer-cars.index', '客戶車輛資料', '', 19, '', "$date_created", "$date_updated"),
-    (21, 'customer-cars.create', '客戶車輛資料新增', '', 19, '', "$date_created", "$date_updated"),
-    (22, 'customer-cars.edit', '客戶車輛資料修改', '', 19, '', "$date_created", "$date_updated"),
-    (23, 'customer-cars.destroy', '客戶車輛資料刪除', '', 19, '', "$date_created", "$date_updated"),
+    (24, 'customer-cars.index', '客戶車輛資料', '', 19, '', "$date_created", "$date_updated"),
+    (25, 'customer-cars.create', '客戶車輛資料新增', '', 19, '', "$date_created", "$date_updated"),
+    (26, 'customer-cars.edit', '客戶車輛資料修改', '', 19, '', "$date_created", "$date_updated"),
+    (27, 'customer-cars.destroy', '客戶車輛資料刪除', '', 19, '', "$date_created", "$date_updated"),
+
+    (28, 'customer-contacts.index', '客戶聯絡資料列表', '', 19, '', "$date_created", "$date_updated"),
+    (29, 'customer-contacts.create', '客戶聯絡資料新增', '', 19, '', "$date_created", "$date_updated"),
+    (30, 'customer-contacts.edit', '客戶聯絡資料修改', '', 19, '', "$date_created", "$date_updated"),
+    (31, 'customer-contacts.destroy', '客戶聯絡資料刪除', '', 19, '', "$date_created", "$date_updated"),
 
     (100, 'system', '系統設定', '', 0, 'fa-gear', "$date_created", "$date_updated"),
     

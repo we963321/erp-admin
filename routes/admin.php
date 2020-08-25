@@ -149,8 +149,12 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
 
     /**
      * Admin Route resources
+     * 
+     * resource name => controller name
      */
-    $resources = [];
+    $resources = [
+        'customer-contacts' => 'CustomerContactsController'
+    ];
 
     foreach ($resources as $name => $controllerName) {
         Route::get($name . '/index', ['as' => $name . '.index', 'uses' => $controllerName . '@index']);
