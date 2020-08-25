@@ -8,6 +8,9 @@ use App\Models\Admin\Store;
 use App\Models\CarBrand;
 use App\Models\CarColor;
 use App\Models\CustomerCar;
+use App\Models\CustomerCategory;
+use App\Models\CustomerService;
+use App\Models\CustomerProject;
 
 use Illuminate\Http\Request;
 
@@ -272,6 +275,8 @@ class CustomerController extends Controller
         $customer = User::find((int)$id);
         if (!$customer) return redirect(route('admin.customer.index'))->withErrors("找不到該客戶!");
 
+        dd($request->all());
+
         $data = $this->valid($request, [
             'regular_appear_at_time' => 'nullable|array',
             'regular_appear_at' => 'nullable|array',
@@ -334,4 +339,68 @@ class CustomerController extends Controller
 
         return redirect(route('admin.customer.cars', [$id]))->withSuccess('修改成功');
     }
+
+    /**
+     * projects edit page
+     */
+    public function projects(Request $request, $id)
+    {
+        $customer = User::find((int)$id);
+        if (!$customer) return redirect(route('admin.customer.index'))->withErrors("找不到該客戶!");
+
+        $data = [
+            'customer' => $customer,
+            'category' => CustomerCategory::with(['customer_service'])->where('status', '1')->get(),
+            'service'  => CustomerService::where('status', '1')->get(),
+            'project'  => CustomerProject::where('status', '1')->get(),
+            'cars'     => CustomerCar::where('customer_id', $id)->get(),
+        ];
+
+        return view('admin.customer.projects', $data);
+    }
+
+
+    public function projectsUpdate(Request $request, $id)
+    {
+        $customer = User::find((int)$id);
+        if (!$customer) return redirect(route('admin.customer.index'))->withErrors("找不到該客戶!");
+
+        dd($request->all());
+
+        
+        $customer->fill($data);
+        $customer->save();
+
+        $cars = $carData['cars'] ?? [];
+
+        $deleteCars = $carData['delete_cars'] ?? [];
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($cars as $car) {
+                $car['customer_id'] = $customer->id;
+
+                $carModel = new CustomerCar;
+                @$car['id'] && $carModel = CustomerCar::find($car['id']) ?? $carModel;
+
+                unset($car['id']);
+
+                $carModel->fill($car);
+                $carModel->save();
+            }
+
+            !empty($deleteCars) and CustomerCar::whereIn('id', $deleteCars)->update(['customer_id' => null]);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollback();
+        }
+
+        event(new \App\Events\userActionEvent('\App\Models\User', $customer->id, 2, auth('admin')->user()->username . "修改了客戶車輛資料：" . $customer->name . "(" . $customer->id . ")"));
+
+
+        return redirect(route('admin.customer.cars', [$id]))->withSuccess('修改成功');
+    }
+
 }

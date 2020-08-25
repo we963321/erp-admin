@@ -153,6 +153,13 @@
                                     "render": function (data, type, row) {
                                         return renderStatus(row['status']);
                                     }
+                                },
+                                {   
+                                    //對象
+                                    'targets': -5, 
+                                    "render": function (data, type, row) {
+                                        return renderCustomerProjectTarget(row['target']);
+                                    }
                                 }
                             ]
                         });

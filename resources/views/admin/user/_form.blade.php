@@ -78,7 +78,7 @@
 <div class="form-group">
     <label class="col-md-3 control-label">*生日</label>
     <div class="col-md-5">
-        <input type="text" class="form-control" name="birthday" id="datepicker" value="{{ $birthday }}">
+        <input type="date" class="form-control" name="birthday"  value="{{ $birthday }}">
     </div>
 </div>
 

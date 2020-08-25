@@ -39,3 +39,18 @@ renderRoleType=function(status){
 
 	return str;
 }
+
+renderCustomerProjectTarget=function(target){
+	let str = '';
+	
+	switch(target){
+		case '0':
+			str = '客戶';
+			break;
+		case '1':
+			str = '車號';
+			break;
+	}
+
+	return str;
+}

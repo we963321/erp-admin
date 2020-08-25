@@ -34,14 +34,14 @@ class AuthenticateAdmin
 
         //ㄋㄇㄉ
         if($request->getMethod() != 'GET'){
-            if(strpos($routeName, 'datatable')){
-                $routeName = str_replace('datatable', 'index', $routeName);
+            if(strpos($routeName, '.datatable')){
+                $routeName = str_replace('.datatable', '.index', $routeName);
             }
-            if(strpos($routeName, 'store')){
-                $routeName = str_replace('store', 'create', $routeName);
+            if(strpos($routeName, '.store')){
+                $routeName = str_replace('.store', '.create', $routeName);
             }
-            if(strpos($routeName, 'update')){
-                $routeName = str_replace('update', 'edit', $routeName);
+            if(strpos($routeName, '.update')){
+                $routeName = str_replace('.update', '.edit', $routeName);
             }
         }
 

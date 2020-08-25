@@ -26,10 +26,20 @@
     </div>
 </div>
 
+<!--
 <div class="form-group">
     <label class="col-md-3 control-label">*對象</label>
     <div class="col-md-5">
         <input type="text" class="form-control" name="target" value="{{ $target }}">
+    </div>
+</div>
+-->
+
+<div class="form-group">
+    <label class="col-md-3 control-label">*對象</label>
+    <div class="col-md-5">
+        <input type="radio" name="target" value="0" {{ ((int)$target===0) ? 'checked' : '' }}>客戶 &nbsp;
+        <input type="radio" name="target" value="1" {{ ((int)$target===1) ? 'checked' : '' }}>車號 &nbsp;
     </div>
 </div>
 

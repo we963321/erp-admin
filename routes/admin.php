@@ -66,6 +66,8 @@ Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () 
     //客戶管理
     Route::get('customer/{customer}/cars', 'CustomerController@cars')->name('customer.cars');
     Route::put('customer/{customer}/cars', 'CustomerController@carsUpdate')->name('customer.cars.update');
+    Route::get('customer/{customer}/projects', 'CustomerController@projects')->name('customer.projects');
+    Route::put('customer/{customer}/projects', 'CustomerController@projectsUpdate')->name('customer.projects.update');
     Route::get('customer/index', ['as' => 'customer.index', 'uses' => 'CustomerController@index']);
     Route::post('customer/index', ['as' => 'customer.index', 'uses' => 'CustomerController@index']);
     Route::resource('customer', 'CustomerController', ['names' => ['update' => 'customer.edit', 'store' => 'customer.create']]);
