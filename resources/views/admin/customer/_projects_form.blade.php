@@ -32,11 +32,11 @@
 
 <!-- template category -->
 <div id="category_template" style="display: none">
-    <div class="panel panel-info" style="padding: 10px 10px">
+    <div class="panel panel-info category" style="padding: 10px 10px">
         <div class="form-group">
             <label class="col-md-3 control-label category_title"></label>
             <div class="col-md-5">
-                <select class="form-control category_selector">
+                <select class="form-control category_selector" required>
                     <option>請選擇</option>
                     @foreach($category as $key => $val)
                         <option value="{{ $val['id'] }}" >
@@ -53,9 +53,7 @@
         <div class="form-group">
             <label class="col-md-3 control-label service_title"></label>
             <div class="col-md-5">
-                <select class="form-control service_selector">
-
-                </select>
+                <select class="form-control service_selector" required></select>
             </div>
         </div>
     </div>
@@ -66,11 +64,11 @@
 
 <!-- template project -->
 <div id="project_template" style="display: none">
-    <div class="panel panel-info" style="padding: 10px 10px">
+    <div class="panel panel-info project" style="padding: 10px 10px">
         <div class="form-group">
             <label class="col-md-3 control-label project_title"></label>
             <div class="col-md-5">
-                <select class="form-control project_selector">
+                <select class="form-control project_selector" required>
                     <option value="">請選擇</option>
                     @foreach($project as $key => $val)
                         <option value="{{ $val['id'] }}">
@@ -87,8 +85,8 @@
         <div class="form-group">
             <label class="col-md-3 control-label">專案時間</label>
             <div class="col-md-5">
-                <input type="date" class="form-control project_date_start" >
-                <input type="date" class="form-control project_date_end" >
+                <input type="date" class="form-control project_date_start" required>
+                <input type="date" class="form-control project_date_end" required>
             </div>
         </div>
 
@@ -109,6 +107,9 @@ $(document).ready(function() {
     const service = {!! $service->toJson() !!};
     const project = {!! $project->toJson() !!};
     const cars = {!! $cars->toJson() !!};
+
+    const service_map = {!! $service_map->toJson() !!};
+    const project_map = {!! $project_map->toJson() !!};
 
     //title
     const category_title = '會員種類';
@@ -169,22 +170,17 @@ $(document).ready(function() {
      * category select chagne handle
      */
     category_list_frame.on('change', '.category_selector', function(e) {
-        var self = $(this);
-        var serviceSelector = self.closest('.panel-info').find('.service_selector'); 
+        const self = $(this);
+        const serviceSelector = self.closest('.panel-info').find('.service_selector'); 
         serviceSelector.html('');
 
-        const selected = self.val();
-
-        var categorySelected = category.find(function(category) {
+        const categorySelected = category.find(function(category) {
             return category.id === +self.val();
         });
 
         categorySelected.customer_service && categorySelected.customer_service.forEach(function(item) {
             serviceSelector.append('<option value="' + item.id + '">' + item.name + '</option>');
         });
-
-        const name = self.attr('name');
-        $(`select[name="${name}"]`).find(`option[value="${selected}"]`).attr('selected', true);
     });
 
 
@@ -193,8 +189,6 @@ $(document).ready(function() {
      */
     project_list_frame.on('change', '.project_selector', function(e) {
         const self = $(this);
-
-        const selected = self.val();
 
         const projectSelected = project.find(function(project) {
             return project.id === +self.val();
@@ -208,65 +202,94 @@ $(document).ready(function() {
 
         //假如選擇的專案對象是車子，要生下拉選單
         if(projectSelected.target == 1){
-            let carsSelector = $(`<select name=project[${index}][customer_car_id]></select>`);
+            let carsSelector = $(`<select name=project[${index}][car_id]></select>`);
             cars.forEach(function(item) {
                 carsSelector.append('<option value="' + item.id + '">' + item.number + '</option>');
             });
             area.html(carsSelector)
         }else{
-            let disableInput = $('<input type="text" readonly disabled>')
+            let disableInput = $('<input type="text" readonly disabled>');
             area.html(disableInput)
         }
-
-        const name = self.attr('name');
-        $(`select[name="${name}"]`).find(`option[value="${selected}"]`).attr('selected', true);
-    });
-
-
-    project_list_frame.on('change', '.project_date_start, .project_date_end', function(e) {
-        var self = $(this);
-        const name = self.attr('name');
-        const value = self.val();
-        $(`input[name="${name}"]`).val(value)
     });
 
     /** create category form list */
-    function createCategory() {
-        const category_num = parseInt($('.category_title').length);
-        const service_num = parseInt($('.service_title').length);
+    function createCategory(data) {
+        let index = parseInt(category_list_frame.find('.category').length);
+
+        const template = category_template;
 
         //title
-        category_template.find('.category_title').text(category_title + category_num)
-        category_template.find('.service_title').text(service_title + service_num)
+        template.find('.category_title').text(category_title + parseInt(index + 1));
+        template.find('.service_title').text(service_title + parseInt(index + 1));
 
         //delete index
-        category_template.find('.delete-category').attr('data-index', 'category_'+service_num)
+        template.find('.delete-category').attr('data-index', 'category_'+index);
 
         //name
-        category_template.find('.category_selector').attr('name', `category[${category_num}][customer_category_id]`)
-        category_template.find('.service_selector').attr('name', `category[${category_num}][customer_service_id]`)
+        template.find('.category_selector').attr('name', `category[${index}][category_id]`);
+        template.find('.service_selector').attr('name', `category[${index}][service_id]`);
 
-        category_list_frame.append(category_template.html())
+        //add
+        category_list_frame.append(template.html());
+
+        //make old data
+        if(data){
+            Object.keys(data).forEach((key)=>{
+                if(key == 'service'){
+                    key = 'category_id';
+                }
+                const target =  category_list_frame.find(`[name="category[${index}][${key}]"]`);
+                if(target){
+                    if(key == 'category_id'){
+                        target.val(data['service']['customer_category_id']);
+                    }else{
+                        target.val(data[key]);
+                    }
+
+                    target.change();
+                }
+            });
+        }
+
+        template.remove();
     }
 
     /** create category form list */
-    function createProject() {
-        const project_num = parseInt($('.project_title').length);
+    function createProject(data) {
+        const index = parseInt(project_list_frame.find('.project').length);
+
+        const template = project_template;
        
-        project_template.find('.panel-info').attr('data-index', project_num);
+        template.find('.panel-info').attr('data-index', index);
 
         //title
-        project_template.find('.project_title').text(project_title + project_num)
+        template.find('.project_title').text(project_title + parseInt(index + 1));
 
         //delete index
-        project_template.find('.delete-project').attr('data-index', 'project_'+project_num)
+        template.find('.delete-project').attr('data-index', 'project_'+index);
 
         //name
-        project_template.find('.project_selector').attr('name', `project[${project_num}][customer_project_id]`)
-        project_template.find('.project_date_start').attr('name', `project[${project_num}][date_start]`)
-        project_template.find('.project_date_end').attr('name', `project[${project_num}][date_end]`)
+        template.find('.project_selector').attr('name', `project[${index}][project_id]`);
+        template.find('.project_date_start').attr('name', `project[${index}][started_at]`);
+        template.find('.project_date_end').attr('name', `project[${index}][ended_at]`);
 
-        project_list_frame.append(project_template.html())
+        //add
+        project_list_frame.append(template.html());
+
+        //make old data
+        if(data){
+            Object.keys(data).forEach((key)=>{
+                const target = project_list_frame.find(`[name="project[${index}][${key}]"]`);
+                if(target){
+                    target.val(data[key]);
+                }
+
+                target.change();
+            });
+        }
+
+        template.remove();
     }
     
     /** remove project form list */
@@ -280,5 +303,26 @@ $(document).ready(function() {
             project_list_frame.find(`span[data-index=${id}]`).closest('.panel-info').remove();
         }
     }
+
+    //render data
+    function renderList(){
+        service_map.map((item)=>{
+            createCategory(item);
+        });
+
+        project_map.map((item)=>{
+            createProject(item);
+        });
+
+        if(service_map.length == 0){
+            createCategory();
+        }
+       
+        if(project_map.length == 0){
+            createProject();
+        }
+    }
+
+    renderList();
 });
 </script>

@@ -11,6 +11,8 @@ use App\Models\CustomerCar;
 use App\Models\CustomerCategory;
 use App\Models\CustomerService;
 use App\Models\CustomerProject;
+use App\Models\CustomerServiceMap;
+use App\Models\CustomerProjectMap;
 
 use Illuminate\Http\Request;
 
@@ -275,8 +277,6 @@ class CustomerController extends Controller
         $customer = User::find((int)$id);
         if (!$customer) return redirect(route('admin.customer.index'))->withErrors("找不到該客戶!");
 
-        dd($request->all());
-
         $data = $this->valid($request, [
             'regular_appear_at_time' => 'nullable|array',
             'regular_appear_at' => 'nullable|array',
@@ -349,11 +349,13 @@ class CustomerController extends Controller
         if (!$customer) return redirect(route('admin.customer.index'))->withErrors("找不到該客戶!");
 
         $data = [
-            'customer' => $customer,
-            'category' => CustomerCategory::with(['customer_service'])->where('status', '1')->get(),
-            'service'  => CustomerService::where('status', '1')->get(),
-            'project'  => CustomerProject::where('status', '1')->get(),
-            'cars'     => CustomerCar::where('customer_id', $id)->get(),
+            'customer'      => $customer,
+            'category'      => CustomerCategory::with(['customer_service'])->where('status', '1')->get(),
+            'service'       => CustomerService::where('status', '1')->get(),
+            'project'       => CustomerProject::where('status', '1')->get(),
+            'cars'          => CustomerCar::where('customer_id', $id)->get(),
+            'service_map'   => CustomerServiceMap::with(['service'])->where('customer_id', $id)->get(),
+            'project_map'   => CustomerProjectMap::with(['project'])->where('customer_id', $id)->get(),
         ];
 
         return view('admin.customer.projects', $data);
@@ -365,42 +367,32 @@ class CustomerController extends Controller
         $customer = User::find((int)$id);
         if (!$customer) return redirect(route('admin.customer.index'))->withErrors("找不到該客戶!");
 
-        dd($request->all());
-
-        
-        $customer->fill($data);
-        $customer->save();
-
-        $cars = $carData['cars'] ?? [];
-
-        $deleteCars = $carData['delete_cars'] ?? [];
+        $category = $request->get('category') ?? [];
+        $project = $request->get('project') ?? [];
 
         DB::beginTransaction();
 
         try {
-            foreach ($cars as $car) {
-                $car['customer_id'] = $customer->id;
+            CustomerServiceMap::where(['customer_id' => $id])->delete();
+            CustomerProjectMap::where(['customer_id' => $id])->delete();
 
-                $carModel = new CustomerCar;
-                @$car['id'] && $carModel = CustomerCar::find($car['id']) ?? $carModel;
-
-                unset($car['id']);
-
-                $carModel->fill($car);
-                $carModel->save();
+            foreach ($category as $item) {
+                CustomerServiceMap::firstOrCreate(['customer_id' => $id, 'service_id' => $item['service_id']]);
             }
 
-            !empty($deleteCars) and CustomerCar::whereIn('id', $deleteCars)->update(['customer_id' => null]);
+            foreach ($project as $item) {
+                $item['customer_id'] = $id;
+                CustomerProjectMap::firstOrCreate($item);
+            }
 
             DB::commit();
-        } catch (\Throwable $th) {
+        } catch (\PDOException $e) {
             DB::rollback();
         }
 
-        event(new \App\Events\userActionEvent('\App\Models\User', $customer->id, 2, auth('admin')->user()->username . "修改了客戶車輛資料：" . $customer->name . "(" . $customer->id . ")"));
+        event(new \App\Events\userActionEvent('\App\Models\User', $customer->id, 2, auth('admin')->user()->username . "修改了會員專案資料：" . $customer->name . "(" . $customer->id . ")"));
 
-
-        return redirect(route('admin.customer.cars', [$id]))->withSuccess('修改成功');
+        return redirect(route('admin.customer.projects', [$id]))->withSuccess('修改成功');
     }
 
 }
