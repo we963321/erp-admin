@@ -30,8 +30,6 @@ Route::group(['prefix' => 'errors'], function () {
     });
 });
 
-Route::post('customer/register', 'CustomerController@store');
-
 Route::group(['middleware' => ['auth:admin', 'menu', 'authAdmin']], function () {
 
     //儀表版

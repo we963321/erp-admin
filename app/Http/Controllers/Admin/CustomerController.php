@@ -367,6 +367,14 @@ class CustomerController extends Controller
         $customer = User::find((int)$id);
         if (!$customer) return redirect(route('admin.customer.index'))->withErrors("找不到該客戶!");
 
+        $this->valid($request, [
+            'category.*.service_id' => 'required|exists:customer_service,id',
+            'project.*.project_id'  => 'required|exists:customer_project,id',
+            'project.*.car_id'      => 'nullable|exists:customer_cars,id',
+            'project.*.started_at'  => 'required|date',
+            'project.*.ended_at'    => 'required|date',
+        ]);
+
         $category = $request->get('category') ?? [];
         $project = $request->get('project') ?? [];
 

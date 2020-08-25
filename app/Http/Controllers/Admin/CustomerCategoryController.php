@@ -184,7 +184,7 @@ class CustomerCategoryController extends Controller
 
         if($used){
             return redirect()->back()
-                ->withErrors("尚有專屬服務使用[".$used->name."]，刪除失敗");
+                ->withErrors("尚有專屬服務[".$used->name."]使用，刪除失敗");
         }
 
         if ($tag) {

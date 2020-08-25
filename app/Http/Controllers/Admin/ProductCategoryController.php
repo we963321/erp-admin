@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\ProductCategory;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -179,11 +180,11 @@ class ProductCategoryController extends Controller
     {
         $tag = ProductCategory::find((int)$id);
 
-        $used = CustomerService::where('product_category_id', $id)->first();
+        $used = Product::where('product_category_id', $id)->first();
 
         if($used){
             return redirect()->back()
-                ->withErrors("尚有專屬服務使用[".$used->name."]，刪除失敗");
+                ->withErrors("尚有產品[".$used->name."]使用，刪除失敗");
         }
 
         if ($tag) {
