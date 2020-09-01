@@ -23,53 +23,53 @@ class CustomerProjectController extends Controller
         'feature'                 => '',
         'target'                  => '',
 
-        'service_product_id1'     => '',
-        'service_product_num1'    => '',
-        'service_product_unit1'   => '',
-        'service_product_id2'     => '',
-        'service_product_num2'    => '',
-        'service_product_unit2'   => '',
-        'service_product_id3'     => '',
-        'service_product_num3'    => '',
-        'service_product_unit3'   => '',
-        'service_product_id4'     => '',
-        'service_product_num4'    => '',
-        'service_product_unit4'   => '',
-        'service_product_id5'     => '',
-        'service_product_num5'    => '',
-        'service_product_unit5'   => '',
+        'service_product_id1'     => 0,
+        'service_product_num1'    => 0,
+        'service_product_unit1'   => 0,
+        'service_product_id2'     => 0,
+        'service_product_num2'    => 0,
+        'service_product_unit2'   => 0,
+        'service_product_id3'     => 0,
+        'service_product_num3'    => 0,
+        'service_product_unit3'   => 0,
+        'service_product_id4'     => 0,
+        'service_product_num4'    => 0,
+        'service_product_unit4'   => 0,
+        'service_product_id5'     => 0,
+        'service_product_num5'    => 0,
+        'service_product_unit5'   => 0,
 
-        'bonus_product_id1'     => '',
-        'bonus_product_num1'    => '',
-        'bonus_product_unit1'   => '',
-        'bonus_product_id2'     => '',
-        'bonus_product_num2'    => '',
-        'bonus_product_unit2'   => '',
-        'bonus_product_id3'     => '',
-        'bonus_product_num3'    => '',
-        'bonus_product_unit3'   => '',
-        'bonus_product_id4'     => '',
-        'bonus_product_num4'    => '',
-        'bonus_product_unit4'   => '',
-        'bonus_product_id5'     => '',
-        'bonus_product_num5'    => '',
-        'bonus_product_unit5'   => '',
+        'bonus_product_id1'     => 0,
+        'bonus_product_num1'    => 0,
+        'bonus_product_unit1'   => 0,
+        'bonus_product_id2'     => 0,
+        'bonus_product_num2'    => 0,
+        'bonus_product_unit2'   => 0,
+        'bonus_product_id3'     => 0,
+        'bonus_product_num3'    => 0,
+        'bonus_product_unit3'   => 0,
+        'bonus_product_id4'     => 0,
+        'bonus_product_num4'    => 0,
+        'bonus_product_unit4'   => 0,
+        'bonus_product_id5'     => 0,
+        'bonus_product_num5'    => 0,
+        'bonus_product_unit5'   => 0,
 
-        'gift_product_id1'      => '',
-        'gift_product_num1'     => '',
-        'gift_product_unit1'    => '',
-        'gift_product_id2'      => '',
-        'gift_product_num2'     => '',
-        'gift_product_unit2'    => '',
-        'gift_product_id3'      => '',
-        'gift_product_num3'     => '',
-        'gift_product_unit3'    => '',
-        'gift_product_id4'      => '',
-        'gift_product_num4'     => '',
-        'gift_product_unit4'    => '',
-        'gift_product_id5'      => '',
-        'gift_product_num5'     => '',
-        'gift_product_unit5'    => '',
+        'gift_product_id1'      => 0,
+        'gift_product_num1'     => 0,
+        'gift_product_unit1'    => 0,
+        'gift_product_id2'      => 0,
+        'gift_product_num2'     => 0,
+        'gift_product_unit2'    => 0,
+        'gift_product_id3'      => 0,
+        'gift_product_num3'     => 0,
+        'gift_product_unit3'    => 0,
+        'gift_product_id4'      => 0,
+        'gift_product_num4'     => 0,
+        'gift_product_unit4'    => 0,
+        'gift_product_id5'      => 0,
+        'gift_product_num5'     => 0,
+        'gift_product_unit5'    => 0,
 
         'remark'                => '',
         'status'                => 1,
@@ -169,6 +169,12 @@ class CustomerProjectController extends Controller
 
             foreach (array_keys($this->fields) as $field) {
                 $model->$field = $request->get($field);
+
+                if(strpos($field, 'service') !== false || strpos($field, 'bonus') !== false || strpos($field, 'gift') !== false){
+                    if($model->$field == ''){
+                        $model->$field = 0;
+                    }
+                }
             }
 
             $model->save();
@@ -206,13 +212,18 @@ class CustomerProjectController extends Controller
         $model = $this->model::find((int)$id);
         if (!$model) return redirect('/'.env('ADMIN_PREFIX').'/'.$this->resource.'')->withErrors("找不到該'.$this->title.'!");
 
+        $data['map_list'] = [];
         foreach (array_keys($this->fields) as $field) {
             $data[$field] = old($field, $model->$field);
+
+            if((strpos($field, 'service') !== false || strpos($field, 'bonus') !== false || strpos($field, 'gift') !== false) && $model->$field > 0){
+                $data['map_list'][$field] = $model->$field;
+            }
         }
 
         $data['productAll'] = Product::where('status', '1')->get()->toArray();
         $data['id'] = (int)$id;
-        
+
         return view('admin.'.$this->resource.'.edit', $data);
     }
 
@@ -238,6 +249,12 @@ class CustomerProjectController extends Controller
 
         foreach (array_keys($this->fields) as $field) {
             $model->$field = $request->get($field);
+
+            if(strpos($field, 'service') !== false || strpos($field, 'bonus') !== false || strpos($field, 'gift') !== false){
+                if($model->$field == ''){
+                    $model->$field = 0;
+                }
+            }
         }
 
         try{

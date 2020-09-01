@@ -45,371 +45,49 @@
 
 <hr>
 
-<div class="form-group">
-    <label class="col-md-3 control-label">服務內容1</label>
-    <div class="col-md-5">
-        <select name="service_product_id1">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $service_product_id1) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
+<div class="row" style="margin-bottom: .75rem;">
+    <div class="col-md-7 col-md-offset-3">
+        <button class="btn btn-primary btn-xs create-service" type="button">
+            新增服務內容
+            <i class="fa fa-plus-circle"></i>
+        </button>
     </div>
 </div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量1</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="service_product_num1" value="{{ $service_product_num1 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位1</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="service_product_unit1" value="{{ $service_product_unit1 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">服務內容2</label>
-    <div class="col-md-5">
-        <select name="service_product_id2">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $service_product_id2) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量2</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="service_product_num2" value="{{ $service_product_num2 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位2</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="service_product_unit2" value="{{ $service_product_unit2 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">服務內容3</label>
-    <div class="col-md-5">
-        <select name="service_product_id3">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $service_product_id3) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量3</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="service_product_num3" value="{{ $service_product_num3 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位3</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="service_product_unit3" value="{{ $service_product_unit3 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">服務內容4</label>
-    <div class="col-md-5">
-        <select name="service_product_id4">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $service_product_id4) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量4</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="service_product_num4" value="{{ $service_product_num4 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位4</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="service_product_unit4" value="{{ $service_product_unit4 }}">
-    </div>
-</div>
-
-<div class="form-group">
-    <label class="col-md-3 control-label">服務內容5</label>
-    <div class="col-md-5">
-        <select name="service_product_id5">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $service_product_id5) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量5</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="service_product_num5" value="{{ $service_product_num5 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位5</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="service_product_unit5" value="{{ $service_product_unit5 }}">
+<div class="row">
+    <div class="col-md-7 col-md-offset-3 cars-list">
+        <div class="panel-group car-component" id="service_list_frame" role="tablist" aria-multiselectable="true"></div>
     </div>
 </div>
 
 <hr>
 
-<div class="form-group">
-    <label class="col-md-3 control-label">超值加碼1</label>
-    <div class="col-md-5">
-        <select name="bonus_product_id1">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $bonus_product_id1) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
+<div class="row" style="margin-bottom: .75rem;">
+    <div class="col-md-7 col-md-offset-3">
+        <button class="btn btn-primary btn-xs create-bonus" type="button">
+            新增超值加碼
+            <i class="fa fa-plus-circle"></i>
+        </button>
     </div>
 </div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量1</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="bonus_product_num1" value="{{ $bonus_product_num1 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位1</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="bonus_product_unit1" value="{{ $bonus_product_unit1 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">超值加碼2</label>
-    <div class="col-md-5">
-        <select name="bonus_product_id2">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $bonus_product_id2) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量2</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="bonus_product_num2" value="{{ $bonus_product_num2 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位2</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="bonus_product_unit2" value="{{ $bonus_product_unit2 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">超值加碼3</label>
-    <div class="col-md-5">
-        <select name="bonus_product_id3">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $bonus_product_id3) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量3</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="bonus_product_num3" value="{{ $bonus_product_num3 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位3</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="bonus_product_unit3" value="{{ $bonus_product_unit3 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">超值加碼4</label>
-    <div class="col-md-5">
-        <select name="bonus_product_id4">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $bonus_product_id4) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量4</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="bonus_product_num4" value="{{ $bonus_product_num4 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位4</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="bonus_product_unit4" value="{{ $bonus_product_unit4 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">超值加碼5</label>
-    <div class="col-md-5">
-        <select name="bonus_product_id5">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $bonus_product_id5) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量5</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="bonus_product_num5" value="{{ $bonus_product_num5 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位5</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="bonus_product_unit5" value="{{ $bonus_product_unit5 }}">
+<div class="row">
+    <div class="col-md-7 col-md-offset-3 cars-list">
+        <div class="panel-group car-component" id="bonus_list_frame" role="tablist" aria-multiselectable="true"></div>
     </div>
 </div>
 
 <hr>
 
-<div class="form-group">
-    <label class="col-md-3 control-label">好禮相送1</label>
-    <div class="col-md-5">
-        <select name="gift_product_id1">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $gift_product_id1) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
+<div class="row" style="margin-bottom: .75rem;">
+    <div class="col-md-7 col-md-offset-3">
+        <button class="btn btn-primary btn-xs create-gift" type="button">
+            新增好禮相送
+            <i class="fa fa-plus-circle"></i>
+        </button>
     </div>
 </div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量1</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="gift_product_num1" value="{{ $gift_product_num1 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位1</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="gift_product_unit1" value="{{ $gift_product_unit1 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">好禮相送2</label>
-    <div class="col-md-5">
-        <select name="gift_product_id2">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $gift_product_id2) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量2</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="gift_product_num2" value="{{ $gift_product_num2 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位2</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="gift_product_unit2" value="{{ $gift_product_unit2 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">好禮相送3</label>
-    <div class="col-md-5">
-        <select name="gift_product_id3">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $gift_product_id3) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量3</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="gift_product_num3" value="{{ $gift_product_num3 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位3</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="gift_product_unit3" value="{{ $gift_product_unit3 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">好禮相送4</label>
-    <div class="col-md-5">
-        <select name="gift_product_id4">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $gift_product_id4) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量4</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="gift_product_num4" value="{{ $gift_product_num4 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位4</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="gift_product_unit4" value="{{ $gift_product_unit4 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">好禮相送5</label>
-    <div class="col-md-5">
-        <select name="gift_product_id5">
-            @foreach($productAll as $key => $val)
-                <option value="{{ $val['id'] }}" @if($val['id'] == $gift_product_id5) selected @endif >
-                    {{ $val['name'] }} ({{ $val['code'] }})
-                </option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">數量5</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="gift_product_num5" value="{{ $gift_product_num5 }}">
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-md-3 control-label">單位5</label>
-    <div class="col-md-5">
-        <input type="text" class="form-control" name="gift_product_unit5" value="{{ $gift_product_unit5 }}">
+<div class="row">
+    <div class="col-md-7 col-md-offset-3 cars-list">
+        <div class="panel-group car-component" id="gift_list_frame" role="tablist" aria-multiselectable="true"></div>
     </div>
 </div>
 
@@ -430,3 +108,217 @@
         <input type="radio" name="status" value="-1" {{ ((int)$status===-1) ? 'checked' : '' }}>刪除 &nbsp;
     </div>
 </div>
+
+
+<div id="template" style="display: none">
+    <div class="panel panel-info" style="padding: 10px 10px">
+        <div class="form-group">
+            <label class="col-md-3 control-label title"></label>
+            <div class="col-md-5">
+                <select class="product_selector">
+                    <option value="">請選擇</option>
+                    @foreach($productAll as $key => $val)
+                        <option value="{{ $val['id'] }}">
+                            {{ $val['name'] }} ({{ $val['code'] }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-4">
+                <span class="pull-right text-danger delete" data-index style="cursor: pointer;">刪除</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label num"></label>
+            <div class="col-md-5">
+                <input type="text" class="form-control num_selector">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label unit"></label>
+            <div class="col-md-5">
+                <input type="text" class="form-control unit_selector">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-delete" tabIndex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    ×
+                </button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+                <p class="lead">
+                    <i class="fa fa-question-circle fa-lg"></i>
+                    確認要刪除這個<span class="title"></span>嗎?
+                </p>
+                <p class="text-muted">確認之後需案下儲存才會進行刪除。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger confirm-button">
+                    <i class="fa fa-times-circle"></i> 確認
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+
+    //title
+    const service_title = '服務內容';
+    const bonus_title = '超值加碼';
+    const gift_title = '好禮相送';
+    const num = '數量';
+    const unit = '單位';
+
+    //for edit map_list
+    const map_list = {!! json_encode($map_list ?? []) !!};
+
+    //frame
+    const service_list_frame = $('#service_list_frame');
+    const bonus_list_frame = $('#bonus_list_frame');
+    const gift_list_frame = $('#gift_list_frame');
+
+    //template
+    const public_template = $('#template');
+
+    //create btn
+    const createServiceButton = $('.create-service');  
+    const createBonusButton = $('.create-bonus'); 
+    const createGiftButton = $('.create-gift'); 
+
+    //deleteModal
+    const deleteModal = $("#modal-delete");
+
+    createServiceButton.on('click', function() {
+        createTemplate('service');
+    });
+
+    createBonusButton.on('click', function() {
+        createTemplate('bonus');
+    });
+
+    createGiftButton.on('click', function() {
+        createTemplate('gift');
+    });
+
+    //delete warnning
+    service_list_frame.add(bonus_list_frame).add(gift_list_frame).on('click', '.delete', function() {
+        const self = $(this);
+        deleteModal.attr('data-index', self.attr('data-index'));
+        deleteModal.find('.title').text(service_title)
+        deleteModal.modal();
+    });
+
+    /**
+     * Confirm delete action
+     */
+    deleteModal.on('click', '.confirm-button', function(e) {
+        deleteItem(deleteModal.attr('data-index'));
+        deleteModal.modal('hide');
+    })
+
+    /** create service form list */
+    function createTemplate(type) {
+        let frame, template, title;
+
+        switch(type){
+            case "service":
+                frame = service_list_frame;
+                title = service_title;
+            break;
+
+            case "bonus":
+                frame = bonus_list_frame;
+                title = bonus_title;
+            break;
+
+            case "gift":
+                frame = gift_list_frame;
+                title = gift_title;
+            break;
+        }
+
+        template = public_template;
+
+        template.find('.panel-info').addClass(type);
+
+        let length = parseInt(frame.find(`.${type}`).length);
+
+        const index = parseInt(length + 1);
+
+        if(index > 5){
+            alert(title + '最大上限5筆');
+            return false;
+        }
+
+        //title
+        template.find('.title').text(title + index);
+        template.find('.num').text(num + index);
+        template.find('.unit').text(unit + index);
+        
+        //delete index
+        template.find(`.delete`).attr('data-index', `${type}_` + index);
+
+        //name
+        template.find('.product_selector').attr('name', `${type}_product_id${index}`).attr('required', true);
+        template.find('.num_selector').attr('name', `${type}_product_num${index}`);
+        template.find('.unit_selector').attr('name', `${type}_product_unit${index}`);
+
+        //add
+        frame.append(template.html());
+
+        template.remove();
+    }
+
+    /** remove project form list */
+    function deleteItem(id) {
+        const is_service = id.indexOf('service');
+        const is_bonus = id.indexOf('bonus');
+        const is_gift = id.indexOf('gift');
+
+        if(is_service !== -1){
+            service_list_frame.find(`span[data-index=${id}]`).closest('.panel-info').remove();
+        }else if(is_bonus !== -1){
+            bonus_list_frame.find(`span[data-index=${id}]`).closest('.panel-info').remove();
+        }else if(is_gift !== -1){
+            gift_list_frame.find(`span[data-index=${id}]`).closest('.panel-info').remove();
+        }
+    }
+
+    //render data
+    function renderList(){
+        Object.keys(map_list).forEach((key)=>{
+            if(key.indexOf('id') !== -1){
+                const type = key.split('_')[0];
+                createTemplate(type);
+            }
+
+            renderValue(key, map_list[key]);
+        });
+
+        //新增畫面
+        if(map_list.length == 0){
+            createTemplate('service');
+            createTemplate('bonus');
+            createTemplate('gift');
+        }
+    }
+
+    function renderValue(name, value){
+        $(`[name="${name}"]`).val(value);
+    }
+
+    renderList();
+});
+</script>
